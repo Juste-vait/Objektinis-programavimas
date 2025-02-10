@@ -1,4 +1,4 @@
-include <iostream>
+#include <iostream>
 #include <vector>
 #include <iomanip>
 #include <limits>
@@ -9,8 +9,22 @@ struct Studentas {
     string vardas, pavarde;
     vector<int> namuDarbai;
     int egzaminas;
+    double galutinis;
 };
 
+// Funkcija apskaičiuoti vidurkį
+double skaiciuotiVidurki(const vector<int>& pazymiai) {
+    if (pazymiai.empty()) return 0.0;
+    int suma = 0;
+    for (int paz : pazymiai) suma += paz;
+    return static_cast<double>(suma) / pazymiai.size();
+}
+
+// Funkcija apskaičiuoti galutinį balą
+double skaiciuotiGalutini(const vector<int>& namuDarbai, int egzaminas) {
+    double vidurkis = skaiciuotiVidurki(namuDarbai);
+    return 0.4 * vidurkis + 0.6 * static_cast<double>(egzaminas);
+}
 
 int main() {
     int n;
@@ -25,8 +39,7 @@ int main() {
         cout << "Iveskite " << i + 1 << "-ojo studento varda: ";
         cin >> studentai[i].vardas;
 
-        // Iveskite tiksliai 5 namų darbų pažymius
-        cout << "Iveskite 5 namu darbu pazymius desimtbaleje sistemoje: ";
+        cout << "Iveskite 5 namu darbu pazymius: ";
         studentai[i].namuDarbai.clear();
 
         int pazymys;
@@ -40,20 +53,16 @@ int main() {
             }
         }
 
-        // Jei vartotojas įvedė per daug skaičių, ignoruojame juos
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-        // Egzamino rezultato įvedimas
-        cout << "Iveskite egzamino rezultata desimtbaleje sistemoje: ";
+        cout << "Iveskite egzamino rezultata: ";
         while (!(cin >> studentai[i].egzaminas)) {
             cout << "Neteisinga ivestis! Iveskite skaiciu: ";
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
         
-        // Jei vartotojas įvedė per daug skaičių, ignoruojame juos
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
+        studentai[i].galutinis = skaiciuotiGalutini(studentai[i].namuDarbai, studentai[i].egzaminas);
     }
 
     return 0;
