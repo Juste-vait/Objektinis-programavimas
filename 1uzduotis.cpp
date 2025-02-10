@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <vector>
 #include <iomanip>
@@ -59,10 +60,19 @@ int main() {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
-        
+
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         studentai[i].galutinis = skaiciuotiGalutini(studentai[i].namuDarbai, studentai[i].egzaminas);
+    }
+
+    cout << "\n---------------------------------------------------\n";
+    cout << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15) << "Galutinis (Vid.)" << endl;
+    cout << "---------------------------------------------------\n";
+
+    for (const auto& stud : studentai) {
+        cout << left << setw(15) << stud.pavarde << setw(15) << stud.vardas 
+             << fixed << setprecision(2) << setw(15) << stud.galutinis << endl;
     }
 
     return 0;
