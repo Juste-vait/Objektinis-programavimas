@@ -21,7 +21,7 @@ int main() {
     vector<Studentas> studentai;
     char pasirinkimas;
 
-    cout << "Pasirinkite galutinio balo skaiciavima (V - vidurkis, M - mediana): ";
+    cout << "Pasirinkite galutinio balo skaiciavimą (V - vidurkis, M - mediana): ";
     cin >> pasirinkimas;
 
     while (true) {
@@ -39,13 +39,27 @@ int main() {
         cout << "Įveskite namų darbų rezultatus (baigti -1):\n";
         while (true) {
             int rezultatas;
-            cin >> rezultatas;
+            if (!(cin >> rezultatas)) { 
+                cout << "Klaida! Įveskite tik skaičius.\n";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                continue;
+            }
             if (rezultatas == -1) break;
             stud.namuDarbai.push_back(rezultatas);
         }
 
         cout << "Įveskite egzamino rezultatą: ";
-        cin >> stud.egzaminas;
+        while (true) {
+            if (!(cin >> stud.egzaminas)) { 
+                cout << "Klaida! Įveskite tik skaičių.\n";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                continue;
+            }
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+            break;
+        }
 
         if (pasirinkimas == 'V' || pasirinkimas == 'v') {
             double vidurkis = skaiciuotiVidurki(stud.namuDarbai);
