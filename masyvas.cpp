@@ -1,3 +1,5 @@
+//kompiliuot: g++ -std=c++11 -o main masyvas.cpp
+
 #include <iostream>
 #include <vector>
 #include <iomanip>
@@ -38,18 +40,6 @@ double skaiciuotiMediana(int* pazymiai, int kiekis) {
         return pazymiai[kiekis / 2];
     }
 }
-
-/*
-double skaiciuotiGalutiniVidurkis(const vector<int>& namuDarbai, int egzaminas) {
-    double vidurkis = skaiciuotiVidurki(namuDarbai);
-    return 0.4 * vidurkis + 0.6 * static_cast<double>(egzaminas);
-}
-
-double skaiciuotiGalutiniMediana(vector<int>& namuDarbai, int egzaminas) {
-    double mediana = skaiciuotiMediana(namuDarbai);
-    return 0.4 * mediana + 0.6 * static_cast<double>(egzaminas);
-}
-*/
 
 void ivestiStudenta(vector<Studentas>& studentai, char pasirinkimas) {
     Studentas stud;
