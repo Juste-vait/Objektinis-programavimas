@@ -22,6 +22,41 @@ struct Studentas {
 
     Studentas() : namuDarbai(nullptr), namuDarbaiKiekis(0) {}
     ~Studentas() { delete[] namuDarbai; }
+    
+    Studentas(const Studentas& other) {
+        vardas = other.vardas;
+        pavarde = other.pavarde;
+        egzaminas = other.egzaminas;
+        galutinis = other.galutinis;
+        namuDarbaiKiekis = other.namuDarbaiKiekis;
+        
+        if (other.namuDarbai) {
+            namuDarbai = new int[namuDarbaiKiekis];
+            copy(other.namuDarbai, other.namuDarbai + namuDarbaiKiekis, namuDarbai);
+        } else {
+            namuDarbai = nullptr;
+        }
+    }
+
+    Studentas& operator=(const Studentas& other) {
+        if (this != &other) {
+            delete[] namuDarbai;
+            
+            vardas = other.vardas;
+            pavarde = other.pavarde;
+            egzaminas = other.egzaminas;
+            galutinis = other.galutinis;
+            namuDarbaiKiekis = other.namuDarbaiKiekis;
+            
+            if (other.namuDarbai) {
+                namuDarbai = new int[namuDarbaiKiekis];
+                copy(other.namuDarbai, other.namuDarbai + namuDarbaiKiekis, namuDarbai);
+            } else {
+                namuDarbai = nullptr;
+            }
+        }
+        return *this;
+    }
 };
 
 double skaiciuotiVidurki(int* pazymiai, int kiekis) {
@@ -114,7 +149,6 @@ void generuotiPazymius(Studentas& stud, char pasirinkimas) {
         stud.galutinis = 0.4 * mediana + 0.6 * stud.egzaminas;
     }
 
-    
 }
 
 void generuotiStudentus(vector<Studentas>& studentai, char pasirinkimas) {
