@@ -1,3 +1,5 @@
+//kompiliuot: g++ -std=c++11 -o main vector.cpp
+
 #include <iostream>
 #include <vector>
 #include <iomanip>
@@ -35,16 +37,6 @@ double skaiciuotiMediana(vector<int>& pazymiai) {
     } else {
         return pazymiai[n / 2];
     }
-}
-
-double skaiciuotiGalutiniVidurkis(const vector<int>& namuDarbai, int egzaminas) {
-    double vidurkis = skaiciuotiVidurki(namuDarbai);
-    return 0.4 * vidurkis + 0.6 * static_cast<double>(egzaminas);
-}
-
-double skaiciuotiGalutiniMediana(vector<int>& namuDarbai, int egzaminas) {
-    double mediana = skaiciuotiMediana(namuDarbai);
-    return 0.4 * mediana + 0.6 * static_cast<double>(egzaminas);
 }
 
 void ivestiStudenta(vector<Studentas>& studentai, char pasirinkimas) {
@@ -150,8 +142,16 @@ int main() {
     char pasirinkimas;
     int pasirinkimasMeniu;
 
-    cout << "Pasirinkite galutinio balo skaičiavimą (V - vidurkis, M - mediana): ";
-    cin >> pasirinkimas;
+    while (true) {
+        cout << "Pasirinkite galutinio balo skaičiavimą (V - vidurkis, M - mediana): ";
+        cin >> pasirinkimas;
+
+        if (pasirinkimas == 'V' || pasirinkimas == 'v' || pasirinkimas == 'M' || pasirinkimas == 'm') {
+            break; 
+        } else {
+            cout << "Neteisinga įvestis! Pasirinkite V arba M.\n";
+        }
+    }
     
     while (true) {
         cout << "\nPasirinkite veiksmą:\n";
