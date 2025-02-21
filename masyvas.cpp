@@ -185,8 +185,16 @@ int main() {
     char pasirinkimas;
     int pasirinkimasMeniu;
 
-    cout << "Pasirinkite galutinio balo skaičiavimą (V - vidurkis, M - mediana): ";
-    cin >> pasirinkimas;
+    while (true) {
+        cout << "Pasirinkite galutinio balo skaičiavimą (V - vidurkis, M - mediana): ";
+        cin >> pasirinkimas;
+
+        if (pasirinkimas == 'V' || pasirinkimas == 'v' || pasirinkimas == 'M' || pasirinkimas == 'm') {
+            break; 
+        } else {
+            cout << "Neteisinga įvestis! Pasirinkite V arba M.\n";
+        }
+    }
     
     while (true) {
         cout << "\nPasirinkite veiksmą:\n";
