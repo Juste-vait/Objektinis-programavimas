@@ -9,6 +9,9 @@
 #include <random>
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
+#include <sstream>
+
 
 
 using namespace std;
@@ -135,6 +138,45 @@ void generuotiStudentus(vector<Studentas>& studentai, char pasirinkimas) {
     }
 }
 
+void nuskaitytiIsFailo(vector<Studentas>& studentai, char pasirinkimas) {
+    string failoPavadinimas;
+    cout << "\nĮveskite failo pavadinimą: ";
+    cin >> failoPavadinimas;
+
+    ifstream failas(failoPavadinimas);
+    if (!failas) {
+        cout << "Nepavyko atidaryti failo!" << endl;
+        return;
+    }
+    
+    string eilute;
+    getline(failas, eilute); 
+    while (getline(failas, eilute)) {
+        istringstream line(eilute);
+        Studentas stud;
+        line >> stud.vardas >> stud.pavarde;
+        
+        int rezultatas;
+        while (line >> rezultatas) {
+            stud.namuDarbai.push_back(rezultatas);
+        }
+        
+        stud.egzaminas = stud.namuDarbai.back(); 
+        stud.namuDarbai.pop_back(); 
+
+        if (pasirinkimas == 'V' || pasirinkimas == 'v') {
+            double vidurkis = skaiciuotiVidurki(stud.namuDarbai);
+            stud.galutinis = 0.4 * vidurkis + 0.6 * stud.egzaminas;
+        } else {
+            double mediana = skaiciuotiMediana(stud.namuDarbai);
+            stud.galutinis = 0.4 * mediana + 0.6 * stud.egzaminas;
+        }
+        
+        studentai.push_back(stud);
+    }
+    failas.close();
+
+}
 
 int main() {
     srand(time(0));  
@@ -183,6 +225,8 @@ int main() {
             }
         } else if (pasirinkimasMeniu == 3) {
             generuotiStudentus(studentai, pasirinkimas);
+        } else if (pasirinkimasMeniu == 5) {
+            nuskaitytiIsFailo(studentai, pasirinkimas);
         } else {
             cout << "Neteisingas pasirinkimas! Bandykite dar kartą.\n";
         }
@@ -202,6 +246,8 @@ int main() {
         cout << left << setw(15) << stud.pavarde << setw(15) << stud.vardas
              << fixed << setprecision(2) << setw(15) << stud.galutinis << endl;
     }
+    git branch
+    git branch
 
     return 0;
 }
