@@ -175,7 +175,55 @@ void nuskaitytiIsFailo(vector<Studentas>& studentai, char pasirinkimas) {
         studentai.push_back(stud);
     }
     failas.close();
+}
 
+void isvestiDuomenis(const vector<Studentas>& studentai, char pasirinkimas) {
+    string pasirinkimasIsvesti;
+    cout << "Ar norite išvesti duomenis į failą ar į ekraną? (F/E): ";
+    cin >> pasirinkimasIsvesti;
+    
+    if (pasirinkimasIsvesti == "F" || pasirinkimasIsvesti == "f") {
+        string failoPavadinimas;
+        cout << "Įveskite failo pavadinimą: ";
+        cin >> failoPavadinimas;
+        ofstream outFile(failoPavadinimas);
+        
+        if (!outFile) {
+            cout << "Nepavyko atidaryti failo!" << endl;
+            return;
+        }
+
+        outFile << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15) << "Galutinis (";
+        if (pasirinkimas == 'V' || pasirinkimas == 'v') {
+            outFile << "Vid.)";
+        } else {
+            outFile << "Med.)";
+        }
+        outFile << endl;
+        outFile << string(45, '-') << endl;
+        
+        for (const auto& stud : studentai) {
+            outFile << left << setw(15) << stud.pavarde << setw(15) << stud.vardas
+                    << fixed << setprecision(2) << setw(15) << stud.galutinis << endl;
+        }
+        
+        outFile.close();
+        cout << "Duomenys sėkmingai išsaugoti į " << failoPavadinimas << "!" << endl;
+    } else {
+        cout << "\n---------------------------------------------------\n";
+        cout << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15) << "Galutinis (";
+        if (pasirinkimas == 'V' || pasirinkimas == 'v') {
+            cout << "Vid.)";
+        } else {
+            cout << "Med.)";
+        }
+        cout << endl;
+        cout << "---------------------------------------------------\n";
+
+        for (const auto& stud : studentai) {
+            cout << left << setw(15) << stud.pavarde << setw(15) << stud.vardas << fixed << setprecision(2) << setw(15) << stud.galutinis << endl;
+        }
+    }
 }
 
 int main() {
@@ -227,6 +275,8 @@ int main() {
             generuotiStudentus(studentai, pasirinkimas);
         } else if (pasirinkimasMeniu == 5) {
             nuskaitytiIsFailo(studentai, pasirinkimas);
+            isvestiDuomenis(studentai, pasirinkimas);
+            break;
         } else {
             cout << "Neteisingas pasirinkimas! Bandykite dar kartą.\n";
         }
