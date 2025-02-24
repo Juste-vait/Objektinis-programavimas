@@ -12,8 +12,6 @@
 #include <fstream>
 #include <sstream>
 
-
-
 using namespace std;
 
 struct Studentas {
@@ -231,6 +229,7 @@ int main() {
     vector<Studentas> studentai;
     char pasirinkimas;
     int pasirinkimasMeniu;
+    bool duomenysIsvesti = false;
 
     while (true) {
         cout << "Pasirinkite galutinio balo skaičiavimą (V - vidurkis, M - mediana): ";
@@ -276,12 +275,14 @@ int main() {
         } else if (pasirinkimasMeniu == 5) {
             nuskaitytiIsFailo(studentai, pasirinkimas);
             isvestiDuomenis(studentai, pasirinkimas);
+            duomenysIsvesti = true;
             break;
         } else {
             cout << "Neteisingas pasirinkimas! Bandykite dar kartą.\n";
         }
     }
 
+    if (!duomenysIsvesti) {
     cout << "\n---------------------------------------------------\n";
     cout << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15) << "Galutinis (";
     if (pasirinkimas == 'V' || pasirinkimas == 'v') {
@@ -293,11 +294,9 @@ int main() {
     cout << "---------------------------------------------------\n";
 
     for (const auto& stud : studentai) {
-        cout << left << setw(15) << stud.pavarde << setw(15) << stud.vardas
-             << fixed << setprecision(2) << setw(15) << stud.galutinis << endl;
+        cout << left << setw(15) << stud.pavarde << setw(15) << stud.vardas << fixed << setprecision(2) << setw(15) << stud.galutinis << endl;
+        }
     }
-    git branch
-    git branch
 
     return 0;
 }
