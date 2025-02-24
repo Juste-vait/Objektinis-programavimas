@@ -12,7 +12,6 @@
 #include <fstream>
 #include <sstream>
 
-
 using namespace std;
 
 struct Studentas {
@@ -177,12 +176,62 @@ void nuskaitytiIsFailo(vector<Studentas>& studentai, char pasirinkimas) {
 
 }
 
+void isvestiDuomenis(const vector<Studentas>& studentai, char pasirinkimas) {
+    string pasirinkimasIsvesti;
+    cout << "Ar norite išvesti duomenis į failą ar į ekraną? (F/E): ";
+    cin >> pasirinkimasIsvesti;
+    
+    if (pasirinkimasIsvesti == "F" || pasirinkimasIsvesti == "f") {
+        string failoPavadinimas;
+        cout << "Įveskite failo pavadinimą: ";
+        cin >> failoPavadinimas;
+        ofstream outFile(failoPavadinimas);
+        
+        if (!outFile) {
+            cout << "Nepavyko atidaryti failo!" << endl;
+            return;
+        }
+
+        outFile << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15) << "Galutinis (";
+        if (pasirinkimas == 'V' || pasirinkimas == 'v') {
+            outFile << "Vid.)";
+        } else {
+            outFile << "Med.)";
+        }
+        outFile << endl;
+        outFile << string(45, '-') << endl;
+        
+        for (const auto& stud : studentai) {
+            outFile << left << setw(15) << stud.pavarde << setw(15) << stud.vardas
+                    << fixed << setprecision(2) << setw(15) << stud.galutinis << endl;
+        }
+        
+        outFile.close();
+        cout << "Duomenys sėkmingai išsaugoti į " << failoPavadinimas << "!" << endl;
+    } else {
+        cout << "\n---------------------------------------------------\n";
+        cout << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15) << "Galutinis (";
+        if (pasirinkimas == 'V' || pasirinkimas == 'v') {
+            cout << "Vid.)";
+        } else {
+            cout << "Med.)";
+        }
+        cout << endl;
+        cout << "---------------------------------------------------\n";
+
+        for (const auto& stud : studentai) {
+            cout << left << setw(15) << stud.pavarde << setw(15) << stud.vardas << fixed << setprecision(2) << setw(15) << stud.galutinis << endl;
+        }
+    }
+}
+
 
 int main() {
     srand(time(0));  
     vector<Studentas> studentai;
     char pasirinkimas;
     int pasirinkimasMeniu;
+
 
     while (true) {
         cout << "Pasirinkite galutinio balo skaičiavimą (V - vidurkis, M - mediana): ";
@@ -228,10 +277,13 @@ int main() {
             generuotiStudentus(studentai, pasirinkimas);
         } else if (pasirinkimasMeniu == 5) {
             nuskaitytiIsFailo(studentai, pasirinkimas);
+            isvestiDuomenis(studentai, pasirinkimas);
+            break;
         }else {
             cout << "Neteisingas pasirinkimas! Bandykite dar kartą.\n";
         }
     }
+
 
     cout << "\n---------------------------------------------------\n";
     cout << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15) << "Galutinis (";
@@ -244,9 +296,9 @@ int main() {
     cout << "---------------------------------------------------\n";
 
     for (const auto& stud : studentai) {
-        cout << left << setw(15) << stud.pavarde << setw(15) << stud.vardas
-             << fixed << setprecision(2) << setw(15) << stud.galutinis << endl;
-    }
+        cout << left << setw(15) << stud.pavarde << setw(15) << stud.vardas << fixed << setprecision(2) << setw(15) << stud.galutinis << endl;
+        }
+    
 
     return 0;
 }
