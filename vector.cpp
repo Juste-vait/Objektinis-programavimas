@@ -142,13 +142,18 @@ void generuotiStudentus(vector<Studentas>& studentai, char pasirinkimas) {
 
 void nuskaitytiIsFailo(vector<Studentas>& studentai) {
     string failoPavadinimas;
-    cout << "\nĮveskite failo pavadinimą: ";
-    cin >> failoPavadinimas;
+    ifstream failas;
 
-    ifstream failas(failoPavadinimas);
-    if (!failas) {
-        cout << "Nepavyko atidaryti failo!" << endl;
-        return;
+    while (true) {
+        cout << "\nĮveskite failo pavadinimą: ";
+        cin >> failoPavadinimas;
+        
+        failas.open(failoPavadinimas);
+        if (failas) break; 
+
+        cout << "Nepavyko atidaryti failo! Bandykite dar kartą.\n";
+        cin.clear(); 
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');  
     }
 
     auto start = steady_clock::now();
@@ -194,6 +199,11 @@ void isvestiDuomenis(vector<Studentas>& studentai) {
 
     auto start1 = steady_clock::now();
 
+    if (cin.fail() || (rusiavimoPasirinkimas < 1 || rusiavimoPasirinkimas > 4)) {
+        cin.clear();  
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');  
+        cout << "Neteisinga įvestis! Duomenys nebus rūšiuojami.\n";
+    } else {
     switch (rusiavimoPasirinkimas) {
         case 1:
             sort(studentai.begin(), studentai.end(), [](const Studentas& a, const Studentas& b) {
@@ -215,8 +225,7 @@ void isvestiDuomenis(vector<Studentas>& studentai) {
                 return a.galutinisMed > b.galutinisMed;
             });
             break;
-        default:
-            cout << "Neteisingas pasirinkimas! Duomenys nebus rūšiuojami.\n";
+    }
     }
 
     auto end1 = steady_clock::now();
@@ -344,6 +353,8 @@ int main() {
             break;
         } else {
             cout << "Neteisingas pasirinkimas! Bandykite dar kartą.\n";
+            cin.clear();  
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
     }
 
