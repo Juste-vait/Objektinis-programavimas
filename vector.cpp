@@ -20,6 +20,8 @@ struct Studentas {
     vector<int> namuDarbai;
     int egzaminas;
     double galutinis;
+    double galutinisVid;
+    double galutinisMed;
 };
 
 double skaiciuotiVidurki(const vector<int>& pazymiai) {
@@ -136,7 +138,7 @@ void generuotiStudentus(vector<Studentas>& studentai, char pasirinkimas) {
     }
 }
 
-void nuskaitytiIsFailo(vector<Studentas>& studentai, char pasirinkimas) {
+void nuskaitytiIsFailo(vector<Studentas>& studentai) {
     string failoPavadinimas;
     cout << "\nĮveskite failo pavadinimą: ";
     cin >> failoPavadinimas;
@@ -162,67 +164,66 @@ void nuskaitytiIsFailo(vector<Studentas>& studentai, char pasirinkimas) {
         stud.egzaminas = stud.namuDarbai.back(); 
         stud.namuDarbai.pop_back(); 
 
-        if (pasirinkimas == 'V' || pasirinkimas == 'v') {
-            double vidurkis = skaiciuotiVidurki(stud.namuDarbai);
-            stud.galutinis = 0.4 * vidurkis + 0.6 * stud.egzaminas;
-        } else {
-            double mediana = skaiciuotiMediana(stud.namuDarbai);
-            stud.galutinis = 0.4 * mediana + 0.6 * stud.egzaminas;
-        }
+        double vidurkis = skaiciuotiVidurki(stud.namuDarbai);
+        stud.galutinisVid = 0.4 * vidurkis + 0.6 * stud.egzaminas;
+
+        double mediana = skaiciuotiMediana(stud.namuDarbai);
+        stud.galutinisMed = 0.4 * mediana + 0.6 * stud.egzaminas;
         
         studentai.push_back(stud);
     }
     failas.close();
 }
 
-void isvestiDuomenis(const vector<Studentas>& studentai, char pasirinkimas) {
+void isvestiDuomenis(vector<Studentas>& studentai) {
     string pasirinkimasIsvesti;
     cout << "Ar norite išvesti duomenis į failą ar į ekraną? (F/E): ";
     cin >> pasirinkimasIsvesti;
+    
+    ostream* out;
+    ofstream outFile;
     
     if (pasirinkimasIsvesti == "F" || pasirinkimasIsvesti == "f") {
         string failoPavadinimas;
         cout << "Įveskite failo pavadinimą: ";
         cin >> failoPavadinimas;
-        ofstream outFile(failoPavadinimas);
+        outFile.open(failoPavadinimas);
         
         if (!outFile) {
             cout << "Nepavyko atidaryti failo!" << endl;
             return;
         }
-
-        outFile << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15) << "Galutinis (";
-        if (pasirinkimas == 'V' || pasirinkimas == 'v') {
-            outFile << "Vid.)";
-        } else {
-            outFile << "Med.)";
-        }
-        outFile << endl;
-        outFile << string(45, '-') << endl;
-        
-        for (const auto& stud : studentai) {
-            outFile << left << setw(15) << stud.pavarde << setw(15) << stud.vardas
-                    << fixed << setprecision(2) << setw(15) << stud.galutinis << endl;
-        }
-        
-        outFile.close();
-        cout << "Duomenys sėkmingai išsaugoti į " << failoPavadinimas << "!" << endl;
+        out = &outFile;
     } else {
-        cout << "\n---------------------------------------------------\n";
-        cout << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(15) << "Galutinis (";
-        if (pasirinkimas == 'V' || pasirinkimas == 'v') {
-            cout << "Vid.)";
-        } else {
-            cout << "Med.)";
-        }
-        cout << endl;
-        cout << "---------------------------------------------------\n";
+        out = &cout;
+    }
 
-        for (const auto& stud : studentai) {
-            cout << left << setw(15) << stud.pavarde << setw(15) << stud.vardas << fixed << setprecision(2) << setw(15) << stud.galutinis << endl;
-        }
+    *out << left << setw(15) << "Pavarde" 
+         << setw(15) << "Vardas" 
+         << setw(20) << "Galutinis (Vid.)" 
+         << setw(20) << "Galutinis (Med.)" 
+         << endl;
+    *out << string(70, '-') << endl;
+    
+    for (auto& stud : studentai) {
+        double vidurkis = skaiciuotiVidurki(stud.namuDarbai);
+        double mediana = skaiciuotiMediana(stud.namuDarbai);
+        double galutinisVid = 0.4 * vidurkis + 0.6 * stud.egzaminas;
+        double galutinisMed = 0.4 * mediana + 0.6 * stud.egzaminas;
+
+        *out << left << setw(15) << stud.pavarde 
+             << setw(15) << stud.vardas 
+             << fixed << setprecision(2) << setw(20) << galutinisVid 
+             << setw(20) << galutinisMed 
+             << endl;
+    }
+
+    if (outFile.is_open()) {
+        outFile.close();
+        cout << "Duomenys sėkmingai išsaugoti į failą!" << endl;
     }
 }
+
 
 int main() {
     srand(time(0));  
@@ -230,17 +231,6 @@ int main() {
     char pasirinkimas;
     int pasirinkimasMeniu;
     bool duomenysIsvesti = false;
-
-    while (true) {
-        cout << "Pasirinkite galutinio balo skaičiavimą (V - vidurkis, M - mediana): ";
-        cin >> pasirinkimas;
-
-        if (pasirinkimas == 'V' || pasirinkimas == 'v' || pasirinkimas == 'M' || pasirinkimas == 'm') {
-            break; 
-        } else {
-            cout << "Neteisinga įvestis! Pasirinkite V arba M.\n";
-        }
-    }
     
     while (true) {
         cout << "\nPasirinkite veiksmą:\n";
@@ -248,14 +238,35 @@ int main() {
         cout << "2 - Generuoti pažymius\n";
         cout << "3 - Generuoti ir pažymius, ir vardus/pavardes\n";
         cout << "4 - Baigti darbą\n";
+        cout << "5 - Nuskaityti duomenis iš failo";
         cout << "Jūsų pasirinkimas: ";
         cin >> pasirinkimasMeniu;
 
         if (pasirinkimasMeniu == 4) {
             break;
         } else if (pasirinkimasMeniu == 1) {
+            while (true) {
+                cout << "Pasirinkite galutinio balo skaičiavimą (V - vidurkis, M - mediana): ";
+                cin >> pasirinkimas;
+        
+                if (pasirinkimas == 'V' || pasirinkimas == 'v' || pasirinkimas == 'M' || pasirinkimas == 'm') {
+                    break; 
+                } else {
+                    cout << "Neteisinga įvestis! Pasirinkite V arba M.\n";
+                }
+            }
             ivestiStudenta(studentai, pasirinkimas);
         } else if (pasirinkimasMeniu == 2) {
+            while (true) {
+                cout << "Pasirinkite galutinio balo skaičiavimą (V - vidurkis, M - mediana): ";
+                cin >> pasirinkimas;
+        
+                if (pasirinkimas == 'V' || pasirinkimas == 'v' || pasirinkimas == 'M' || pasirinkimas == 'm') {
+                    break; 
+                } else {
+                    cout << "Neteisinga įvestis! Pasirinkite V arba M.\n";
+                }
+            }
             while (true) {  
                 cout << "Ar norite pridėti studentą? (T/N): ";
                 char tesiame;
@@ -271,10 +282,20 @@ int main() {
                 studentai.push_back(stud);
             }
         } else if (pasirinkimasMeniu == 3) {
+            while (true) {
+                cout << "Pasirinkite galutinio balo skaičiavimą (V - vidurkis, M - mediana): ";
+                cin >> pasirinkimas;
+        
+                if (pasirinkimas == 'V' || pasirinkimas == 'v' || pasirinkimas == 'M' || pasirinkimas == 'm') {
+                    break; 
+                } else {
+                    cout << "Neteisinga įvestis! Pasirinkite V arba M.\n";
+                }
+            }
             generuotiStudentus(studentai, pasirinkimas);
         } else if (pasirinkimasMeniu == 5) {
-            nuskaitytiIsFailo(studentai, pasirinkimas);
-            isvestiDuomenis(studentai, pasirinkimas);
+            nuskaitytiIsFailo(studentai);
+            isvestiDuomenis(studentai);
             duomenysIsvesti = true;
             break;
         } else {
