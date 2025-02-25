@@ -226,8 +226,6 @@ void isvestiDuomenis(vector<Studentas>& studentai) {
     string pasirinkimasIsvesti;
     cout << "Ar norite išvesti duomenis į failą ar į ekraną? (F/E): ";
     cin >> pasirinkimasIsvesti;
-
-    auto start2 = steady_clock::now();
     
     ostream* out;
     ofstream outFile;
@@ -247,11 +245,9 @@ void isvestiDuomenis(vector<Studentas>& studentai) {
         out = &cout;
     }
 
-    *out << left << setw(15) << "Pavarde" 
-         << setw(15) << "Vardas" 
-         << setw(20) << "Galutinis (Vid.)" 
-         << setw(20) << "Galutinis (Med.)" 
-         << endl;
+    auto start2 = steady_clock::now();
+
+    *out << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(20) << "Galutinis (Vid.)" << setw(20) << "Galutinis (Med.)" << endl;
     *out << string(70, '-') << endl;
     
     for (auto& stud : studentai) {
@@ -260,11 +256,7 @@ void isvestiDuomenis(vector<Studentas>& studentai) {
         double galutinisVid = 0.4 * vidurkis + 0.6 * stud.egzaminas;
         double galutinisMed = 0.4 * mediana + 0.6 * stud.egzaminas;
 
-        *out << left << setw(15) << stud.pavarde 
-             << setw(15) << stud.vardas 
-             << fixed << setprecision(2) << setw(20) << galutinisVid 
-             << setw(20) << galutinisMed 
-             << endl;
+        *out << left << setw(15) << stud.pavarde << setw(15) << stud.vardas << fixed << setprecision(2) << setw(20) << galutinisVid << setw(20) << galutinisMed << endl;
     }
 
     if (outFile.is_open()) {
