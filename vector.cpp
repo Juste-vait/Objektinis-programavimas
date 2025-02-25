@@ -11,8 +11,10 @@
 #include <ctime>
 #include <fstream>
 #include <sstream>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 struct Studentas {
     string vardas;
@@ -148,6 +150,8 @@ void nuskaitytiIsFailo(vector<Studentas>& studentai) {
         cout << "Nepavyko atidaryti failo!" << endl;
         return;
     }
+
+    auto start = steady_clock::now();
     
     string eilute;
     getline(failas, eilute); 
@@ -173,6 +177,9 @@ void nuskaitytiIsFailo(vector<Studentas>& studentai) {
         studentai.push_back(stud);
     }
     failas.close();
+
+    auto end = steady_clock::now();
+    cout << "Duomenų nuskaitymas užtruko: " << duration_cast<milliseconds>(end - start).count() << " ms" << endl;
 }
 
 void isvestiDuomenis(vector<Studentas>& studentai) {
@@ -184,6 +191,8 @@ void isvestiDuomenis(vector<Studentas>& studentai) {
     cout << "4 - Pagal galutinę medianą (mažėjančiai)\n";
     cout << "Jūsų pasirinkimas: ";
     cin >> rusiavimoPasirinkimas;
+
+    auto start1 = steady_clock::now();
 
     switch (rusiavimoPasirinkimas) {
         case 1:
@@ -210,10 +219,15 @@ void isvestiDuomenis(vector<Studentas>& studentai) {
             cout << "Neteisingas pasirinkimas! Duomenys nebus rūšiuojami.\n";
     }
 
+    auto end1 = steady_clock::now();
+    cout << "Rūšiavimas užtruko: " << duration_cast<milliseconds>(end1 - start1).count() << " ms" << endl;
+
 
     string pasirinkimasIsvesti;
     cout << "Ar norite išvesti duomenis į failą ar į ekraną? (F/E): ";
     cin >> pasirinkimasIsvesti;
+
+    auto start2 = steady_clock::now();
     
     ostream* out;
     ofstream outFile;
@@ -257,6 +271,9 @@ void isvestiDuomenis(vector<Studentas>& studentai) {
         outFile.close();
         cout << "Duomenys sėkmingai išsaugoti į failą!" << endl;
     }
+
+    auto end2 = steady_clock::now();  
+    cout << "Duomenų išvedimas užtruko: " << duration_cast<milliseconds>(end2 - start2).count() << " ms" << endl;
 }
 
 
