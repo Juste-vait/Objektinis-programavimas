@@ -176,6 +176,41 @@ void nuskaitytiIsFailo(vector<Studentas>& studentai) {
 }
 
 void isvestiDuomenis(vector<Studentas>& studentai) {
+    int rusiavimoPasirinkimas;
+    cout << "Pasirinkite rikiavimo būdą:\n";
+    cout << "1 - Pagal vardą (A-Z)\n";
+    cout << "2 - Pagal pavardę (A-Z)\n";
+    cout << "3 - Pagal galutinį vidurkį (mažėjančiai)\n";
+    cout << "4 - Pagal galutinę medianą (mažėjančiai)\n";
+    cout << "Jūsų pasirinkimas: ";
+    cin >> rusiavimoPasirinkimas;
+
+    switch (rusiavimoPasirinkimas) {
+        case 1:
+            sort(studentai.begin(), studentai.end(), [](const Studentas& a, const Studentas& b) {
+                return a.vardas < b.vardas;
+            });
+            break;
+        case 2:
+            sort(studentai.begin(), studentai.end(), [](const Studentas& a, const Studentas& b) {
+                return a.pavarde < b.pavarde;
+            });
+            break;
+        case 3:
+            sort(studentai.begin(), studentai.end(), [](const Studentas& a, const Studentas& b) {
+                return a.galutinisVid > b.galutinisVid;
+            });
+            break;
+        case 4:
+            sort(studentai.begin(), studentai.end(), [](const Studentas& a, const Studentas& b) {
+                return a.galutinisMed > b.galutinisMed;
+            });
+            break;
+        default:
+            cout << "Neteisingas pasirinkimas! Duomenys nebus rūšiuojami.\n";
+    }
+
+
     string pasirinkimasIsvesti;
     cout << "Ar norite išvesti duomenis į failą ar į ekraną? (F/E): ";
     cin >> pasirinkimasIsvesti;
@@ -238,7 +273,7 @@ int main() {
         cout << "2 - Generuoti pažymius\n";
         cout << "3 - Generuoti ir pažymius, ir vardus/pavardes\n";
         cout << "4 - Baigti darbą\n";
-        cout << "5 - Nuskaityti duomenis iš failo";
+        cout << "5 - Nuskaityti duomenis iš failo\n";
         cout << "Jūsų pasirinkimas: ";
         cin >> pasirinkimasMeniu;
 
