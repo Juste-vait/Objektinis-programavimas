@@ -35,14 +35,21 @@ void ivestiStudenta(vector<Studentas>& studentai, char pasirinkimas) {
     cout << "Įveskite namų darbų rezultatus (baigti -1):\n";
     while (true) {
             int rezultatas;
-            if (!(cin >> rezultatas)) {
-            cout << "Klaida! Įveskite tik skaičius.\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            continue;
+            try {
+                cout << "Įveskite pažymį: ";
+                cin >> rezultatas;
+
+                if (cin.fail()) throw invalid_argument("Neteisinga įvestis! Įveskite tik skaičių.");
+                if (rezultatas < -1 || rezultatas > 10) throw out_of_range("Klaida: Skaičius turi būti tarp 1-10.");
+
+                if (rezultatas == -1) break;
+                stud.namuDarbai.push_back(rezultatas);
             }
-        if (rezultatas == -1) break;
-        stud.namuDarbai.push_back(rezultatas);
+            catch (const exception& e) {
+                cout << e.what() << " Bandykite dar kartą.\n";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
         }
         
         cout << "Įveskite egzamino rezultatą: ";
