@@ -141,12 +141,12 @@ void nuskaitytiIsFailo(vector<Studentas>& studentai) {
             cin >> failoPavadinimas;
             
             failas.open(failoPavadinimas);
-            if (!failas) throw runtime_error("Nepavyko atidaryti failo! Bandykite dar kartą.");
+            if (!failas) throw runtime_error("Nepavyko atidaryti failo!");
             
             break; 
         }
         catch (const exception& e) {
-            cout << e.what() << endl;
+            cout << e.what() << "Bandykite dar kartą.\n";
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
