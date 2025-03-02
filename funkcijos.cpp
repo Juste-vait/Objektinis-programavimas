@@ -185,21 +185,34 @@ void nuskaitytiIsFailo(vector<Studentas>& studentai) {
 
 void isvestiDuomenis(vector<Studentas>& studentai) {
     int rusiavimoPasirinkimas;
-    cout << "Pasirinkite rikiavimo būdą:\n";
-    cout << "1 - Pagal vardą (A-Z)\n";
-    cout << "2 - Pagal pavardę (A-Z)\n";
-    cout << "3 - Pagal galutinį vidurkį (mažėjančiai)\n";
-    cout << "4 - Pagal galutinę medianą (mažėjančiai)\n";
-    cout << "Jūsų pasirinkimas: ";
-    cin >> rusiavimoPasirinkimas;
+
+    while (true) {
+        try {
+            cout << "Pasirinkite rikiavimo būdą:\n";
+            cout << "1 - Pagal vardą (A-Z)\n";
+            cout << "2 - Pagal pavardę (A-Z)\n";
+            cout << "3 - Pagal galutinį vidurkį (mažėjančiai)\n";
+            cout << "4 - Pagal galutinę medianą (mažėjančiai)\n";
+            cout << "Jūsų pasirinkimas: ";
+            cin >> rusiavimoPasirinkimas;
+
+            if (cin.fail()) {
+                throw invalid_argument("Neteisinga įvestis! Įveskite tik skaičių.");
+            }
+            if (rusiavimoPasirinkimas < 1 || rusiavimoPasirinkimas > 4) {
+                throw out_of_range("Pasirinkimas turi būti nuo 1 iki 4.");
+            }
+            break;
+        }
+        catch (const exception &e) {
+            cout << e.what() << " Bandykite dar kartą.\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    }
 
     auto start1 = steady_clock::now();
 
-    if (cin.fail() || (rusiavimoPasirinkimas < 1 || rusiavimoPasirinkimas > 4)) {
-        cin.clear();  
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');  
-        cout << "Neteisinga įvestis! Duomenys nebus rūšiuojami.\n";
-    } else {
     switch (rusiavimoPasirinkimas) {
         case 1:
             sort(studentai.begin(), studentai.end(), [](const Studentas& a, const Studentas& b) {
@@ -222,7 +235,7 @@ void isvestiDuomenis(vector<Studentas>& studentai) {
             });
             break;
     }
-    }
+    
 
     auto end1 = steady_clock::now();
     cout << "Rūšiavimas užtruko: " << duration_cast<milliseconds>(end1 - start1).count() << " ms" << endl;
