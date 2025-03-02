@@ -52,15 +52,23 @@ int main() {
                 cout << "Ar norite pridėti studentą? (T/N): ";
                 char tesiame;
                 cin >> tesiame;
-                if (tesiame == 'N' || tesiame == 'n') break;
 
-                Studentas stud;
-                cout << "\nĮveskite studento vardą: ";
-                cin >> stud.vardas;
-                cout << "Įveskite studento pavardę: ";
-                cin >> stud.pavarde;
-                generuotiPazymius(stud, pasirinkimas);
-                studentai.push_back(stud);
+                if (tesiame == 'T' || tesiame == 't') {
+                    
+                    Studentas stud;
+                    cout << "\nĮveskite studento vardą: ";
+                    cin >> stud.vardas;
+                    cout << "Įveskite studento pavardę: ";
+                    cin >> stud.pavarde;
+                    generuotiPazymius(stud, pasirinkimas);
+                    studentai.push_back(stud);
+                } 
+                else if (tesiame == 'N' || tesiame == 'n') {
+                    break;
+                } 
+                else {
+                    cout << "Neteisinga įvestis! Pasirinkite T arba N.\n";
+                }
             }
         } else if (pasirinkimasMeniu == 3) {
             while (true) {
