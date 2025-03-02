@@ -21,12 +21,21 @@ double skaiciuotiMediana(vector<int>& pazymiai) {
 void ivestiStudenta(vector<Studentas>& studentai, char pasirinkimas) {
     Studentas stud;
     while (true) {  
-    cout << "Ar norite pridėti studentą? (T/N): ";
-    char tesiame;
-    cin >> tesiame;
-    if (tesiame == 'N' || tesiame == 'n') break;
+        try {
+            cout << "Ar norite pridėti studentą? (T/N): ";
+            char tesiame;
+            cin >> tesiame;
 
-    Studentas stud;
+            if (cin.fail()) {
+                throw invalid_argument("Neteisinga įvestis! Įveskite tik simbolius T arba N.");
+            }
+
+            if (tesiame == 'N' || tesiame == 'n') break;
+
+            if (tesiame != 'T' && tesiame != 't') {
+                throw invalid_argument("Neteisingas pasirinkimas! Pasirinkite T arba N.");
+            }
+
     cout << "\nĮveskite studento vardą: ";
     cin >> stud.vardas;
     cout << "Įveskite studento pavardę: ";
@@ -79,7 +88,12 @@ void ivestiStudenta(vector<Studentas>& studentai, char pasirinkimas) {
         }
     studentai.push_back(stud);
     }
-    
+    catch (const exception& e) {
+        cout << e.what() << " Bandykite dar kartą.\n";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+    }   
 }
 
 void generuotiPazymius(Studentas& stud, char pasirinkimas) {
