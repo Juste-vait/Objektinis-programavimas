@@ -13,6 +13,7 @@
 #include <fstream>
 #include <sstream>
 #include <chrono>
+#include <struct.h>
 
 using namespace std;
 using namespace std::chrono;
@@ -26,7 +27,7 @@ struct Studentas {
     double galutinisVid;
     double galutinisMed;
 };
-
+ 
 double skaiciuotiVidurki(const vector<int>& pazymiai);
 double skaiciuotiMediana(vector<int>& pazymiai);
 void ivestiStudenta(vector<Studentas>& studentai, char pasirinkimas);
