@@ -52,13 +52,23 @@ void ivestiStudenta(vector<Studentas>& studentai, char pasirinkimas) {
             }
         }
         
-        cout << "Įveskite egzamino rezultatą: ";
-        while (!(cin >> stud.egzaminas)) {
-        cout << "Klaida! Įveskite tik skaičius.\n";
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    while (true){
+            try{
+                cout << "Įveskite egzamino rezultatą: ";
+                cin >> stud.egzaminas;
+
+                if (cin.fail ()) throw invalid_argument("Neteisinga įvestis! Įveskite tik skaičių.");
+                if (stud.egzaminas < 1 || stud.egzaminas > 10) throw out_of_range("Klaida: Skaičius turi būti tarp 1-10.");
+
+                break;
+            }
+            catch (const exception& e) {
+                cout << e.what() << " Bandykite dar kartą.\n";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
         }
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
 
         if (pasirinkimas == 'V' || pasirinkimas == 'v') {
         double vidurkis = skaiciuotiVidurki(stud.namuDarbai);
