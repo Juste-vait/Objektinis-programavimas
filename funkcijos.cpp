@@ -36,10 +36,10 @@ void ivestiStudenta(vector<Studentas>& studentai, char pasirinkimas) {
                 throw invalid_argument("Neteisingas pasirinkimas! Pasirinkite T arba N.");
             }
 
-    cout << "\nĮveskite studento vardą: ";
-    cin >> stud.vardas;
-    cout << "Įveskite studento pavardę: ";
-    cin >> stud.pavarde;
+        cout << "\nĮveskite studento vardą: ";
+        cin >> stud.vardas;
+        cout << "Įveskite studento pavardę: ";
+        cin >> stud.pavarde;
     
     cout << "Įveskite namų darbų rezultatus (baigti -1):\n";
     while (true) {
@@ -123,10 +123,17 @@ void generuotiStudentus(vector<Studentas>& studentai, char pasirinkimas) {
     vector<string> pavardes = {"Kazlauskas", "Petraitis", "Jonaitis", "Biliūnas", "Lukauskis"};
 
     while (true) {
-        cout << "Ar norite pridėti studentą? (T/N): ";
-        char tesiame;
-        cin >> tesiame;
-        if (tesiame == 'N' || tesiame == 'n') break;
+        try {
+            cout << "Ar norite pridėti studentą? (T/N): ";
+            char tesiame;
+            cin >> tesiame;
+
+            // Tikriname, ar įvestas simbolis yra 'N' arba 'n' arba 'T' arba 't'
+            if (tesiame == 'N' || tesiame == 'n') break;
+
+            if (tesiame != 'T' && tesiame != 't') {
+                throw invalid_argument("Neteisinga įvestis! Pasirinkite T arba N.\n");
+            }
 
         Studentas stud;
         stud.vardas = vardai[rand() % vardai.size()];
@@ -142,6 +149,10 @@ void generuotiStudentus(vector<Studentas>& studentai, char pasirinkimas) {
         }
 
         studentai.push_back(stud);
+    }
+    catch (const invalid_argument& e) {
+        cout << e.what() << "Bandykite dar kartą.\n"<<endl;
+    }
     }
 }
 
