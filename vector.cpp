@@ -10,6 +10,7 @@ int main() {
     bool duomenysIsvesti = false;
     
     while (true) {
+        try {
         cout << "\nPasirinkite veiksmą:\n";
         cout << "1 - Rankiniu būdu įvesti duomenis\n";
         cout << "2 - Generuoti pažymius\n";
@@ -18,6 +19,9 @@ int main() {
         cout << "5 - Nuskaityti duomenis iš failo\n";
         cout << "Jūsų pasirinkimas: ";
         cin >> pasirinkimasMeniu;
+        
+        if (cin.fail()) throw invalid_argument("Neteisinga įvestis! Įveskite tik skaičių.");
+        if (pasirinkimasMeniu < 1 || pasirinkimasMeniu > 5) throw out_of_range("Klaida: Skaičius turi būti tarp 1-5.");
 
         if (pasirinkimasMeniu == 4) {
             break;
@@ -80,6 +84,12 @@ int main() {
             cin.clear();  
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
+    }
+    catch (const exception& e) {
+        cout << e.what() << "\nBandykite dar kartą.\n";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
     }
 
     if (!duomenysIsvesti) {
