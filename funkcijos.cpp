@@ -136,15 +136,20 @@ void nuskaitytiIsFailo(vector<Studentas>& studentai) {
     ifstream failas;
 
     while (true) {
-        cout << "\nĮveskite failo pavadinimą: ";
-        cin >> failoPavadinimas;
-        
-        failas.open(failoPavadinimas);
-        if (failas) break; 
-
-        cout << "Nepavyko atidaryti failo! Bandykite dar kartą.\n";
-        cin.clear(); 
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');  
+        try {
+            cout << "\nĮveskite failo pavadinimą: ";
+            cin >> failoPavadinimas;
+            
+            failas.open(failoPavadinimas);
+            if (!failas) throw runtime_error("Nepavyko atidaryti failo! Bandykite dar kartą.");
+            
+            break; 
+        }
+        catch (const exception& e) {
+            cout << e.what() << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
     }
 
     auto start = steady_clock::now();
