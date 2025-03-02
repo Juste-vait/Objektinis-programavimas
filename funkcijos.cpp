@@ -240,10 +240,25 @@ void isvestiDuomenis(vector<Studentas>& studentai) {
     auto end1 = steady_clock::now();
     cout << "Rūšiavimas užtruko: " << duration_cast<milliseconds>(end1 - start1).count() << " ms" << endl;
 
-
     string pasirinkimasIsvesti;
-    cout << "Ar norite išvesti duomenis į failą ar į ekraną? (F/E): ";
-    cin >> pasirinkimasIsvesti;
+
+    while (true) {
+        try {
+            cout << "Ar norite išvesti duomenis į failą ar į ekraną? (F/E): ";
+            cin >> pasirinkimasIsvesti;
+
+            if (pasirinkimasIsvesti != "F" && pasirinkimasIsvesti != "f" && 
+                pasirinkimasIsvesti != "E" && pasirinkimasIsvesti != "e") {
+                throw invalid_argument("Neteisinga įvestis! Įveskite 'F' arba 'E'.");
+            }
+            break;
+        }
+        catch (const exception& e) {
+            cout << e.what() << " Bandykite dar kartą.\n\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    }
     
     ostream* out;
     ofstream outFile;
