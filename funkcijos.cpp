@@ -128,7 +128,6 @@ void generuotiStudentus(vector<Studentas>& studentai, char pasirinkimas) {
             char tesiame;
             cin >> tesiame;
 
-            // Tikriname, ar įvestas simbolis yra 'N' arba 'n' arba 'T' arba 't'
             if (tesiame == 'N' || tesiame == 'n') break;
 
             if (tesiame != 'T' && tesiame != 't') {
@@ -324,4 +323,29 @@ void isvestiDuomenis(vector<Studentas>& studentai) {
 
     auto end2 = steady_clock::now();  
     cout << "Duomenų išvedimas užtruko: " << duration_cast<milliseconds>(end2 - start2).count() << " ms" << endl;
+}
+
+void generuotiFailus(vector<int> dydziai) {
+    for (int studentuSkaicius : dydziai) {
+        string failoPavadinimas = "studentai" + to_string(studentuSkaicius) + ".txt";
+        ofstream failas(failoPavadinimas);
+        
+        if (!failas) {
+            cerr << "Nepavyko sukurti failo: " << failoPavadinimas << endl;
+            continue;
+        }
+        
+        failas << left << setw(25) << "Vardas" << setw(25) << "Pavarde";
+        for (int i = 1; i <= 15; ++i) failas << setw(5) << "ND" + to_string(i);
+        failas << setw(5) << "Egz." << endl;
+
+        for (int i = 1; i <= studentuSkaicius; ++i) {
+            failas << left << setw(25) << "Vardas" + to_string(i) << setw(25) << "Pavarde" + to_string(i);
+            for (int j = 0; j < 15; ++j) failas << setw(5) << (rand() % 10 + 1);
+            failas << setw(5) << (rand() % 10 + 1) << endl;
+        }
+        
+        failas.close();
+        cout << "Failas " << failoPavadinimas << " sukurtas sekmingai!" << endl;
+    }
 }
