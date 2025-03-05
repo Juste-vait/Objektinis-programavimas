@@ -36,5 +36,6 @@ void generuotiStudentus(vector<Studentas>& studentai, char pasirinkimas);
 void nuskaitytiIsFailo(vector<Studentas>& studentai);
 void isvestiDuomenis(vector<Studentas>& studentai);
 void generuotiFailus(vector<int> dydziai);
+void apdorotiPasirinktaFaila(vector<Studentas>& studentai);
 
 #endif

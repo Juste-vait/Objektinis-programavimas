@@ -349,3 +349,50 @@ void generuotiFailus(vector<int> dydziai) {
         cout << "Failas " << failoPavadinimas << " sukurtas sėkmingai!" << endl;
     }
 }
+
+void apdorotiPasirinktaFaila(vector<Studentas>& studentai) {
+    vector<string> failai = {"studentai1000.txt", "studentai10000.txt", "studentai100000.txt", "studentai1000000.txt", "studentai10000000.txt"};
+    string pasirinktasFailas;
+
+    cout << "Pasirinkite failą iš sąrašo:\n";
+    for (size_t i = 0; i < failai.size(); ++i) {
+        cout << i + 1 << " - " << failai[i] << endl;
+    }
+    int pasirinkimas;
+    cin >> pasirinkimas;
+
+    if (pasirinkimas < 1 || pasirinkimas > failai.size()) {
+        cout << "Neteisingas pasirinkimas!" << endl;
+        return;
+    }
+    pasirinktasFailas = failai[pasirinkimas - 1];
+    
+    ifstream failas(pasirinktasFailas);
+    if (!failas) {
+        cerr << "Nepavyko atidaryti failo: " << pasirinktasFailas << endl;
+        return;
+    }
+
+    vector<Studentas> studentai;
+    string eilute;
+    getline(failas, eilute);
+    while (getline(failas, eilute)) {
+        istringstream iss(eilute);
+        Studentas stud;
+        iss >> stud.vardas >> stud.pavarde;
+        int paz;
+        while (iss >> paz) {
+            stud.namuDarbai.push_back(paz);
+        }
+        stud.egzaminas = stud.namuDarbai.back();
+        stud.namuDarbai.pop_back();
+
+        double vidurkis = skaiciuotiVidurki(stud.namuDarbai);
+        double mediana = skaiciuotiMediana(stud.namuDarbai);
+        stud.galutinisVid = 0.4 * vidurkis + 0.6 * stud.egzaminas;
+        stud.galutinisMed = 0.4 * mediana + 0.6 * stud.egzaminas;
+        studentai.push_back(stud);
+    }
+    failas.close();
+
+}
