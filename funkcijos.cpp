@@ -340,12 +340,12 @@ void generuotiFailus(vector<int> dydziai) {
         failas << setw(5) << "Egz." << endl;
 
         for (int i = 1; i <= studentuSkaicius; ++i) {
-            failas << left << setw(25) << "Vardas" + to_string(i) << setw(25) << "Pavarde" + to_string(i);
+            failas << left << setw(25) << "VardasNR" + to_string(i) << setw(25) << "PavardeNR" + to_string(i);
             for (int j = 0; j < 15; ++j) failas << setw(5) << (rand() % 10 + 1);
             failas << setw(5) << (rand() % 10 + 1) << endl;
         }
         
         failas.close();
-        cout << "Failas " << failoPavadinimas << " sukurtas sekmingai!" << endl;
+        cout << "Failas " << failoPavadinimas << " sukurtas sėkmingai!" << endl;
     }
 }
