@@ -34,8 +34,10 @@ void ivestiStudenta(vector<Studentas>& studentai, char pasirinkimas);
 void generuotiPazymius(Studentas& stud, char pasirinkimas);
 void generuotiStudentus(vector<Studentas>& studentai, char pasirinkimas);
 void nuskaitytiIsFailo(vector<Studentas>& studentai);
+void rusiuotiStudentus(vector<Studentas>& studentai);
 void isvestiDuomenis(vector<Studentas>& studentai);
 void generuotiFailus(vector<int> dydziai);
-void apdorotiPasirinktaFaila(vector<Studentas>& studentai);
+void grupuotiStudentus(vector<Studentas>& studentai, vector<Studentas>& kietekai, vector<Studentas>& nuskriaustukai);
+void isvestiIDuFailus(vector<Studentas>& kietekai, vector<Studentas>& nuskriaustukai);
 
 #endif
