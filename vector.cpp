@@ -19,11 +19,12 @@ int main() {
         cout << "4 - Baigti darbą\n";
         cout << "5 - Nuskaityti duomenis iš failo\n";
         cout << "6 - Generuoti failus\n";
+        cout << "7 - Surūšiuoti į galvočius ir nuskriaustukus\n";
         cout << "Jūsų pasirinkimas: ";
         cin >> pasirinkimasMeniu;
         
         if (cin.fail()) throw invalid_argument("Neteisinga įvestis! Įveskite tik skaičių.");
-        if (pasirinkimasMeniu < 1 || pasirinkimasMeniu > 6) throw out_of_range("Klaida: Skaičius turi būti tarp 1-6.");
+        if (pasirinkimasMeniu < 1 || pasirinkimasMeniu > 7) throw out_of_range("Klaida: Skaičius turi būti tarp 1-6.");
 
         if (pasirinkimasMeniu == 4) {
             break;
@@ -91,6 +92,8 @@ int main() {
             break;
         } else if (pasirinkimasMeniu == 6) {
             generuotiFailus(dydziai);
+        } else if (pasirinkimasMeniu == 7) {
+            apdorotiPasirinktaFaila();
         } else {
             cout << "Neteisingas pasirinkimas! Bandykite dar kartą.\n";
             cin.clear();  
