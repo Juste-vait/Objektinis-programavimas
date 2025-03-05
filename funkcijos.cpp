@@ -204,10 +204,11 @@ void nuskaitytiIsFailo(vector<Studentas>& studentai) {
     failas.close();
 
     auto end = steady_clock::now();
+
     cout << "Duomenų nuskaitymas užtruko: " << duration_cast<milliseconds>(end - start).count() << " ms" << endl;
 }
 
-void isvestiDuomenis(vector<Studentas>& studentai) {
+void rusiuotiStudentus(vector<Studentas>& studentai){
     int rusiavimoPasirinkimas;
 
     while (true) {
@@ -263,7 +264,9 @@ void isvestiDuomenis(vector<Studentas>& studentai) {
 
     auto end1 = steady_clock::now();
     cout << "Rūšiavimas užtruko: " << duration_cast<milliseconds>(end1 - start1).count() << " ms" << endl;
+}
 
+void isvestiDuomenis(vector<Studentas>& studentai) {
     string pasirinkimasIsvesti;
 
     while (true) {
@@ -350,49 +353,49 @@ void generuotiFailus(vector<int> dydziai) {
     }
 }
 
-void apdorotiPasirinktaFaila(vector<Studentas>& studentai) {
-    vector<string> failai = {"studentai1000.txt", "studentai10000.txt", "studentai100000.txt", "studentai1000000.txt", "studentai10000000.txt"};
-    string pasirinktasFailas;
+void grupuotiStudentus(vector<Studentas>& studentai, vector<Studentas>& kietekai, vector<Studentas>& nuskriaustukai){
+    char rusiavimoPasirinkimas;
+    cout << "Pasirinkite pagal ką bus surūšiuoti studentai (V - pagal vidurkį, M - pagal medianą): ";
+    cin >> rusiavimoPasirinkimas;
 
-    cout << "Pasirinkite failą iš sąrašo:\n";
-    for (size_t i = 0; i < failai.size(); ++i) {
-        cout << i + 1 << " - " << failai[i] << endl;
-    }
-    int pasirinkimas;
-    cin >> pasirinkimas;
-
-    if (pasirinkimas < 1 || pasirinkimas > failai.size()) {
-        cout << "Neteisingas pasirinkimas!" << endl;
-        return;
-    }
-    pasirinktasFailas = failai[pasirinkimas - 1];
-    
-    ifstream failas(pasirinktasFailas);
-    if (!failas) {
-        cerr << "Nepavyko atidaryti failo: " << pasirinktasFailas << endl;
-        return;
-    }
-
-    vector<Studentas> studentai;
-    string eilute;
-    getline(failas, eilute);
-    while (getline(failas, eilute)) {
-        istringstream iss(eilute);
-        Studentas stud;
-        iss >> stud.vardas >> stud.pavarde;
-        int paz;
-        while (iss >> paz) {
-            stud.namuDarbai.push_back(paz);
+    if (rusiavimoPasirinkimas == 'V' || rusiavimoPasirinkimas == 'v'){
+        for (const auto& stud : studentai) {
+            if (stud.galutinisVid >= 5) {
+                kietekai.push_back(stud);
+            } else {
+                nuskriaustukai.push_back(stud);
+            }
         }
-        stud.egzaminas = stud.namuDarbai.back();
-        stud.namuDarbai.pop_back();
-
-        double vidurkis = skaiciuotiVidurki(stud.namuDarbai);
-        double mediana = skaiciuotiMediana(stud.namuDarbai);
-        stud.galutinisVid = 0.4 * vidurkis + 0.6 * stud.egzaminas;
-        stud.galutinisMed = 0.4 * mediana + 0.6 * stud.egzaminas;
-        studentai.push_back(stud);
     }
-    failas.close();
+    else{
+        for (const auto& stud : studentai) {
+            if (stud.galutinisMed >= 5) {
+                kietekai.push_back(stud);
+            } else {
+                nuskriaustukai.push_back(stud);
+            }
+        }
+    }
+}
 
+void isvestiIDuFailus(vector<Studentas>& kietekai, vector<Studentas>& nuskriaustukai){
+    ofstream outNuskriaustukai("nuskriaustukai.txt"), outKietekai("kietekai.txt");
+    if (!outNuskriaustukai || !outKietekai) {
+        cerr << "Nepavyko sukurti rezultatų failų!" << endl;
+        return;
+    }
+
+    outNuskriaustukai << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(20) << "Galutinis (Vid.)" << setw(20) << "Galutinis (Med.)" << endl;
+    outNuskriaustukai << string(70, '-') << endl;
+    outKietekai << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(20) << "Galutinis (Vid.)" << setw(20) << "Galutinis (Med.)" << endl;
+    outKietekai << string(70, '-') << endl;
+
+    for (const auto& stud : nuskriaustukai) {
+        outNuskriaustukai << left << setw(15) << stud.pavarde << setw(15) << stud.vardas << fixed << setprecision(2) << setw(20) << stud.galutinisVid << setw(20) << stud.galutinisMed << endl;
+    }
+    for (const auto& stud : kietekai) {        
+        outKietekai << left << setw(15) << stud.pavarde << setw(15) << stud.vardas << fixed << setprecision(2) << setw(20) << stud.galutinisVid << setw(20) << stud.galutinisMed << endl;
+    }
+
+    cout << "Failai \"nuskriaustukai.txt\" ir \"kietekai.txt\" sukurti!" << endl;
 }

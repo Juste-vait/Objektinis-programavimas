@@ -9,6 +9,7 @@ int main() {
     int pasirinkimasMeniu;
     bool duomenysIsvesti = false;
     vector<int> dydziai = {1000, 10000, 100000, 1000000, 10000000};
+    vector<Studentas> kietekai, nuskriaustukai;
     
     while (true) {
         try {
@@ -19,7 +20,7 @@ int main() {
         cout << "4 - Baigti darbą\n";
         cout << "5 - Nuskaityti duomenis iš failo\n";
         cout << "6 - Generuoti failus\n";
-        cout << "7 - Surūšiuoti į galvočius ir nuskriaustukus\n";
+        cout << "7 - Sugrupuoti į galvočius ir nuskriaustukus\n";
         cout << "Jūsų pasirinkimas: ";
         cin >> pasirinkimasMeniu;
         
@@ -87,13 +88,16 @@ int main() {
             generuotiStudentus(studentai, pasirinkimas);
         } else if (pasirinkimasMeniu == 5) {
             nuskaitytiIsFailo(studentai);
+            rusiuotiStudentus(studentai);
             isvestiDuomenis(studentai);
             duomenysIsvesti = true;
             break;
         } else if (pasirinkimasMeniu == 6) {
             generuotiFailus(dydziai);
         } else if (pasirinkimasMeniu == 7) {
-            apdorotiPasirinktaFaila();
+            nuskaitytiIsFailo(studentai);
+            grupuotiStudentus(studentai, kietekai, nuskriaustukai);
+            isvestiIDuFailus(kietekai, nuskriaustukai);
         } else {
             cout << "Neteisingas pasirinkimas! Bandykite dar kartą.\n";
             cin.clear();  
