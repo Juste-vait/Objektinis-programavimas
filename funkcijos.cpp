@@ -355,27 +355,44 @@ void generuotiFailus(vector<int> dydziai) {
 
 void grupuotiStudentus(vector<Studentas>& studentai, vector<Studentas>& kietekai, vector<Studentas>& nuskriaustukai){
     char rusiavimoPasirinkimas;
-    cout << "Pasirinkite pagal ką bus surūšiuoti studentai (V - pagal vidurkį, M - pagal medianą): ";
-    cin >> rusiavimoPasirinkimas;
 
-    if (rusiavimoPasirinkimas == 'V' || rusiavimoPasirinkimas == 'v'){
-        for (const auto& stud : studentai) {
-            if (stud.galutinisVid >= 5) {
-                kietekai.push_back(stud);
-            } else {
-                nuskriaustukai.push_back(stud);
+    while (true) {
+        try {
+            cout << "Pasirinkite pagal ką bus surūšiuoti studentai (V - pagal vidurkį, M - pagal medianą): ";
+            cin >> rusiavimoPasirinkimas;
+
+            if (rusiavimoPasirinkimas != 'V' && rusiavimoPasirinkimas != 'v' && rusiavimoPasirinkimas != 'M' && rusiavimoPasirinkimas != 'm') {
+                throw invalid_argument("Neteisinga įvestis! Pasirinkite V arba M.");
             }
+
+            break;
+        } 
+        catch (const invalid_argument& e) {
+            cout << e.what() << " Bandykite dar kartą.\n";
+            cin.clear(); 
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
         }
     }
-    else{
-        for (const auto& stud : studentai) {
-            if (stud.galutinisMed >= 5) {
-                kietekai.push_back(stud);
-            } else {
-                nuskriaustukai.push_back(stud);
+
+        if (rusiavimoPasirinkimas == 'V' || rusiavimoPasirinkimas == 'v'){
+            for (const auto& stud : studentai) {
+                if (stud.galutinisVid >= 5) {
+                    kietekai.push_back(stud);
+                } else {
+                    nuskriaustukai.push_back(stud);
+                }   
             }
         }
-    }
+        else{
+            for (const auto& stud : studentai) {
+                if (stud.galutinisMed >= 5) {
+                    kietekai.push_back(stud);
+                } else {
+                    nuskriaustukai.push_back(stud);
+                }
+            }
+        }
+
 }
 
 void isvestiIDuFailus(vector<Studentas>& kietekai, vector<Studentas>& nuskriaustukai){
