@@ -328,16 +328,37 @@ void isvestiDuomenis(vector<Studentas>& studentai) {
     cout << "Duomenų išvedimas užtruko: " << duration_cast<milliseconds>(end2 - start2).count() << " ms" << endl;
 }
 
-void generuotiFailus(vector<int> dydziai) {
-    for (int studentuSkaicius : dydziai) {
-        string failoPavadinimas = "studentai" + to_string(studentuSkaicius) + ".txt";
-        ofstream failas(failoPavadinimas);
+void generuotiFailus(vector<int>& dydziai) {
+    while (true) {
+        cout << "\nPasirinkite, kokį failą norite sugeneruoti:\n";
+        for (size_t i = 0; i < dydziai.size(); ++i) {
+            cout << i + 1 << " - studentai" << dydziai[i] << ".txt\n";
+        }
+        cout << "0 - Baigti\nJūsų pasirinkimas: ";
         
+        int pasirinkimas;
+        cin >> pasirinkimas;
+
+        if (cin.fail() || pasirinkimas < 0 || pasirinkimas > dydziai.size()) {
+            cout << "Neteisinga įvestis! Bandykite dar kartą.\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue;
+        }
+
+        if (pasirinkimas == 0) break;  
+
+        int studentuSkaicius = dydziai[pasirinkimas - 1];  
+        string failoPavadinimas = "studentai" + to_string(studentuSkaicius) + ".txt";
+        
+        auto start = chrono::steady_clock::now(); 
+        
+        ofstream failas(failoPavadinimas);
         if (!failas) {
             cerr << "Nepavyko sukurti failo: " << failoPavadinimas << endl;
             continue;
         }
-        
+
         failas << left << setw(25) << "Vardas" << setw(25) << "Pavarde";
         for (int i = 1; i <= 15; ++i) failas << setw(5) << "ND" + to_string(i);
         failas << setw(5) << "Egz." << endl;
@@ -347,9 +368,12 @@ void generuotiFailus(vector<int> dydziai) {
             for (int j = 0; j < 15; ++j) failas << setw(5) << (rand() % 10 + 1);
             failas << setw(5) << (rand() % 10 + 1) << endl;
         }
-        
+
         failas.close();
-        cout << "Failas " << failoPavadinimas << " sukurtas sėkmingai!" << endl;
+        
+        auto end = chrono::steady_clock::now();  
+        cout << "Failas " << failoPavadinimas << " sukurtas sėkmingai!\n";
+        cout << "Generavimas užtruko: " << chrono::duration_cast<chrono::milliseconds>(end - start).count() << " ms\n";
     }
 }
 

@@ -36,7 +36,7 @@ void generuotiStudentus(vector<Studentas>& studentai, char pasirinkimas);
 void nuskaitytiIsFailo(vector<Studentas>& studentai);
 void rusiuotiStudentus(vector<Studentas>& studentai);
 void isvestiDuomenis(vector<Studentas>& studentai);
-void generuotiFailus(vector<int> dydziai);
+void generuotiFailus(vector<int>& dydziai);
 void grupuotiStudentus(vector<Studentas>& studentai, vector<Studentas>& kietekai, vector<Studentas>& nuskriaustukai);
 void isvestiIDuFailus(vector<Studentas>& kietekai, vector<Studentas>& nuskriaustukai);
 void testavimoFunkcija_1(vector<int> dydziai);
