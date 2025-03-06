@@ -399,3 +399,12 @@ void isvestiIDuFailus(vector<Studentas>& kietekai, vector<Studentas>& nuskriaust
 
     cout << "Failai \"nuskriaustukai.txt\" ir \"kietekai.txt\" sukurti!" << endl;
 }
+
+void testavimoFunkcija_1(vector<int> dydziai){
+    auto start = steady_clock::now();
+    generuotiFailus(dydziai);
+    auto end = steady_clock::now();  
+    cout << "Failų generavimas užtruko: " << duration_cast<milliseconds>(end - start).count() << " ms" << endl;
+}
+
+
