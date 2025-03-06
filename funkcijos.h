@@ -40,5 +40,6 @@ void generuotiFailus(vector<int> dydziai);
 void grupuotiStudentus(vector<Studentas>& studentai, vector<Studentas>& kietekai, vector<Studentas>& nuskriaustukai);
 void isvestiIDuFailus(vector<Studentas>& kietekai, vector<Studentas>& nuskriaustukai);
 void testavimoFunkcija_1(vector<int> dydziai);
+void testavimoFunkcija_2(vector<Studentas>& studentai, vector<Studentas>& kietekai, vector<Studentas>& nuskriaustukai);
 
 #endif

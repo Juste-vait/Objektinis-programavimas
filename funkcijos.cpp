@@ -407,4 +407,22 @@ void testavimoFunkcija_1(vector<int> dydziai){
     cout << "Failų generavimas užtruko: " << duration_cast<milliseconds>(end - start).count() << " ms" << endl;
 }
 
+void testavimoFunkcija_2(vector<Studentas>& studentai, vector<Studentas>& kietekai, vector<Studentas>& nuskriaustukai){
+    auto start = steady_clock::now();
+
+    nuskaitytiIsFailo(studentai);
+
+    auto start2 = steady_clock::now();
+    grupuotiStudentus(studentai, kietekai, nuskriaustukai);
+    auto end2 = steady_clock::now();
+    cout << "Studentų grupavimas užtruko: " << duration_cast<milliseconds>(end2 - start2).count() << " ms" << endl;
+
+    auto start3 = steady_clock::now();
+    isvestiIDuFailus(kietekai, nuskriaustukai);
+    auto end3 = steady_clock::now();
+    cout << "Išvedimas į failus užtruko: " << duration_cast<milliseconds>(end3 - start3).count() << " ms" << endl;
+
+    auto end = steady_clock::now();
+    cout << "Visos funkcijos veikimo laikas: " << duration_cast<milliseconds>(end - start).count() << " ms" << endl;
+}
 

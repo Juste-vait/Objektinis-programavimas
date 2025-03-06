@@ -102,6 +102,8 @@ int main() {
             isvestiIDuFailus(kietekai, nuskriaustukai);
         } else if (pasirinkimasMeniu == 8) {
             testavimoFunkcija_1(dydziai);
+        } else if (pasirinkimasMeniu == 9) {
+            testavimoFunkcija_2(studentai, kietekai, nuskriaustukai);
         } else {
             cout << "Neteisingas pasirinkimas! Bandykite dar kartą.\n";
             cin.clear();  
