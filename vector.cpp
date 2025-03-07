@@ -27,7 +27,7 @@ int main() {
         cin >> pasirinkimasMeniu;
         
         if (cin.fail()) throw invalid_argument("Neteisinga įvestis! Įveskite tik skaičių.");
-        if (pasirinkimasMeniu < 1 || pasirinkimasMeniu > 9) throw out_of_range("Klaida: Skaičius turi būti tarp 1-6.");
+        if (pasirinkimasMeniu < 1 || pasirinkimasMeniu > 9) throw out_of_range("Klaida: Skaičius turi būti tarp 1-9.");
 
         if (pasirinkimasMeniu == 4) {
             break;
