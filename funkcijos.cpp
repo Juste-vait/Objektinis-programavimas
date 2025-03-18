@@ -1,7 +1,7 @@
 #include "funkcijos.h"
 
 void pasirinktiKonteineri(studentaiVariant &studentai, char pasirinkimasK) {
-    switch (pasirinkimas) {
+    switch (pasirinkimasK) {
         case '1': studentai = vector<Studentas>{}; break;
         case '2': studentai = list<Studentas>{}; break;
         case '3': studentai = deque<Studentas>{}; break;
@@ -494,3 +494,15 @@ void testavimoFunkcija_2(vector<Studentas>& studentai, vector<Studentas>& kietek
     cout << "Visos funkcijos veikimo laikas: " << duration_cast<milliseconds>(end - start).count() << " ms" << endl;
 }
 
+void testavimoFunkcija_3(studentaiVariant &studentai, studentaiVariant &kietekai, studentaiVariant &nuskriaustukai){
+    auto start = steady_clock::now();
+
+    nuskaitytiIsFailo(studentai);
+
+    rusiuotiStudentus(studentai);
+
+    grupuotiStudentus(studentai, kietekai, nuskriaustukai);
+
+    auto end = steady_clock::now();
+    cout << "Visos funkcijos veikimo laikas: " << duration_cast<milliseconds>(end - start).count() << " ms" << endl;
+}
