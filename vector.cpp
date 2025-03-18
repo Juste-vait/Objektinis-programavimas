@@ -4,14 +4,12 @@
 
 int main() {
     srand(time(0));  
-    vector<Studentas> studentai;
-    StudentaiVariant studentai; 
     char pasirinkimasK;
     char pasirinkimas;
     int pasirinkimasMeniu;
     bool duomenysIsvesti = false;
     vector<int> dydziai = {1000, 10000, 100000, 1000000, 10000000};
-    vector<Studentas> kietekai, nuskriaustukai;
+    studentaiVariant studentai, kietekai, nuskriaustukai;
     
     cout << "Pasirinkite konteinerį:\n";
     cout << "1 - vector\n";
@@ -34,11 +32,12 @@ int main() {
         cout << "7 - Paskirstyti studentus į galvočius ir nuskriaustukus\n";
         cout << "8 - testavimo funkcija 1\n";
         cout << "9 - testavimo funkcija 2\n";
+        cout << "10 - testavimo funkcija 2\n";
         cout << "Jūsų pasirinkimas: ";
         cin >> pasirinkimasMeniu;
         
         if (cin.fail()) throw invalid_argument("Neteisinga įvestis! Įveskite tik skaičių.");
-        if (pasirinkimasMeniu < 1 || pasirinkimasMeniu > 9) throw out_of_range("Klaida: Skaičius turi būti tarp 1-9.");
+        if (pasirinkimasMeniu < 1 || pasirinkimasMeniu > 10) throw out_of_range("Klaida: Skaičius turi būti tarp 1-10.");
 
         if (pasirinkimasMeniu == 4) {
             break;
@@ -53,7 +52,13 @@ int main() {
                     cout << "Neteisinga įvestis! Pasirinkite V arba M.\n";
                 }
             }
-            ivestiStudenta(studentai, pasirinkimas);
+            visit([&](auto& konteineris) {
+                if constexpr (is_same_v<decay_t<decltype(konteineris)>, vector<Studentas>>) {
+                    ivestiStudenta(konteineris, pasirinkimas);
+                } else {
+                    cerr << "Klaida: Funkcija ivestiStudenta veikia tik su vector<Studentas>!" << endl;
+                }
+            }, studentai);    
         } else if (pasirinkimasMeniu == 2) {
             while (true) {
                 cout << "Pasirinkite galutinio balo skaičiavimą (V - vidurkis, M - mediana): ";
@@ -98,11 +103,23 @@ int main() {
                     cout << "Neteisinga įvestis! Pasirinkite V arba M.\n";
                 }
             }
-            generuotiStudentus(studentai, pasirinkimas);
+            visit([&](auto& konteineris) {
+                if constexpr (is_same_v<decay_t<decltype(konteineris)>, vector<Studentas>>) {
+                    generuotiStudentus(konteineris, pasirinkimas);
+                } else {
+                    cerr << "Klaida: generuotiStudentus() veikia tik su vector<Studentas>!" << endl;
+                }
+            }, studentai);
         } else if (pasirinkimasMeniu == 5) {
             nuskaitytiIsFailo(studentai);
             rusiuotiStudentus(studentai);
-            isvestiDuomenis(studentai);
+            visit([&](auto& konteineris) {
+                if constexpr (is_same_v<decay_t<decltype(konteineris)>, vector<Studentas>>) {
+                    isvestiDuomenis(konteineris);
+                } else {
+                    cerr << "Klaida: generuotiStudentus() veikia tik su vector<Studentas>!" << endl;
+                }
+            }, studentai);
             duomenysIsvesti = true;
             break;
         } else if (pasirinkimasMeniu == 6) {
@@ -116,6 +133,9 @@ int main() {
         } else if (pasirinkimasMeniu == 9) {
             testavimoFunkcija_2(studentai, kietekai, nuskriaustukai);
             duomenysIsvesti = true;
+            break;
+        } else if (pasirinkimasMeniu == 10) {
+            testavimoFunkcija_3(studentai, kietekai, nuskriaustukai);
             break;
         } else {
             cout << "Neteisingas pasirinkimas! Bandykite dar kartą.\n";
