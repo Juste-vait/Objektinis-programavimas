@@ -208,7 +208,9 @@ void nuskaitytiIsFailo(studentaiVariant& studentai) {
         double mediana = skaiciuotiMediana(stud.namuDarbai);
         stud.galutinisMed = 0.4 * mediana + 0.6 * stud.egzaminas;
         
-        studentai.push_back(stud);
+        visit([&](auto& container) {
+            container.push_back(stud); 
+        }, studentai);
     }
     failas.close();
 
