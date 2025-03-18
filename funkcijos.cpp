@@ -1,6 +1,6 @@
 #include "funkcijos.h"
 
-void pasirinktiKonteineri(StudentaiVariant &studentai, char pasirinkimas) {
+void pasirinktiKonteineri(studentaiVariant &studentai, char pasirinkimasK) {
     switch (pasirinkimas) {
         case '1': studentai = vector<Studentas>{}; break;
         case '2': studentai = list<Studentas>{}; break;
@@ -164,8 +164,7 @@ void generuotiStudentus(vector<Studentas>& studentai, char pasirinkimas) {
     }
 }
 
-template <typename Container>
-void nuskaitytiIsFailo(Container& studentai) {
+void nuskaitytiIsFailo(studentaiVariant& studentai) {
     string failoPavadinimas;
     ifstream failas;
 
@@ -387,7 +386,7 @@ void generuotiFailus(vector<int>& dydziai) {
     }
 }
 
-void grupuotiStudentus(vector<Studentas>& studentai, vector<Studentas>& kietekai, vector<Studentas>& nuskriaustukai){
+void grupuotiStudentus(studentaiVariant& studentai, studentaiVariant& kietekai, studentaiVariant& nuskriaustukai){
     char rusiavimoPasirinkimas;
 
     while (true) {
@@ -410,27 +409,37 @@ void grupuotiStudentus(vector<Studentas>& studentai, vector<Studentas>& kietekai
 
         auto start = steady_clock::now();
 
-        if (rusiavimoPasirinkimas == 'V' || rusiavimoPasirinkimas == 'v'){
-            for (const auto& stud : studentai) {
-                if (stud.galutinisVid >= 5) {
-                    kietekai.push_back(stud);
-                } else {
-                    nuskriaustukai.push_back(stud);
-                }   
-            }
-        }
-        else{
-            for (const auto& stud : studentai) {
-                if (stud.galutinisMed >= 5) {
-                    kietekai.push_back(stud);
-                } else {
-                    nuskriaustukai.push_back(stud);
+        visit([&](auto& studentaiContainer) {
+            if (rusiavimoPasirinkimas == 'V' || rusiavimoPasirinkimas == 'v') {
+                for (const auto& stud : studentaiContainer) {
+                    if (stud.galutinisVid >= 5) {
+                        visit([&](auto& kietekaiContainer) { kietekaiContainer.push_back(stud); }, kietekai);
+                    } else {
+                        visit([&](auto& nuskriaustukaiContainer) { nuskriaustukaiContainer.push_back(stud); }, nuskriaustukai);
+                    }   
+                }
+            } else {
+                for (const auto& stud : studentaiContainer) {
+                    if (stud.galutinisMed >= 5) {
+                        visit([&](auto& kietekaiContainer) { kietekaiContainer.push_back(stud); }, kietekai);
+                    } else {
+                        visit([&](auto& nuskriaustukaiContainer) { nuskriaustukaiContainer.push_back(stud); }, nuskriaustukai);
+                    }
                 }
             }
-        }
-
-    kietekai.shrink_to_fit();
-    nuskriaustukai.shrink_to_fit();
+        }, studentai);
+    
+        visit([](auto& container) {
+            if constexpr (is_same_v<decltype(container), vector<Studentas>>) {
+                container.shrink_to_fit();
+            }
+        }, kietekai);
+    
+        visit([](auto& container) {
+            if constexpr (is_same_v<decltype(container), vector<Studentas>>) {
+                container.shrink_to_fit();
+            }
+        }, nuskriaustukai);
     
     auto end = steady_clock::now();
     cout << "Studentų grupavimas užtruko: " << duration_cast<milliseconds>(end - start).count() << " ms" << endl;
