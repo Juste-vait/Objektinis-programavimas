@@ -83,7 +83,9 @@ int main() {
                     cout << "Įveskite studento pavardę: ";
                     cin >> stud.pavarde;
                     generuotiPazymius(stud, pasirinkimas);
-                    studentai.push_back(stud);
+                    std::visit([&](auto& konteineris) {
+                        konteineris.push_back(stud); 
+                    }, studentai);
                 } 
                 else if (tesiame == 'N' || tesiame == 'n') {
                     break;
