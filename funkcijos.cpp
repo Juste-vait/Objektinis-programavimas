@@ -219,7 +219,7 @@ void nuskaitytiIsFailo(studentaiVariant& studentai) {
     cout << "Duomenų nuskaitymas užtruko: " << duration_cast<milliseconds>(end - start).count() << " ms" << endl;
 }
 
-void rusiuotiStudentus(vector<Studentas>& studentai){
+void rusiuotiStudentus(studentaiVariant& studentai){
     int rusiavimoPasirinkimas;
 
     while (true) {
@@ -249,6 +249,7 @@ void rusiuotiStudentus(vector<Studentas>& studentai){
 
     auto start1 = steady_clock::now();
 
+    visit([&](auto& studentaiContainer) {
     switch (rusiavimoPasirinkimas) {
         case 1:
             sort(studentai.begin(), studentai.end(), [](const Studentas& a, const Studentas& b) {
@@ -271,7 +272,7 @@ void rusiuotiStudentus(vector<Studentas>& studentai){
             });
             break;
     }
-    
+}, studentai);
 
     auto end1 = steady_clock::now();
     cout << "Rūšiavimas užtruko: " << duration_cast<milliseconds>(end1 - start1).count() << " ms" << endl;
