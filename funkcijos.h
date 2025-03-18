@@ -13,6 +13,7 @@
 #include <fstream>
 #include <sstream>
 #include <chrono>
+#include <variant>
 #include <struct.h>
 
 using namespace std;
@@ -27,7 +28,9 @@ struct Studentas {
     double galutinisVid;
     double galutinisMed;
 };
- 
+
+using StudentaiVariant = variant<vector<Studentas>, list<Studentas>, deque<Studentas>>;
+void pasirinktiKonteineri(StudentaiVariant &studentai, char pasirinkimas)
 double skaiciuotiVidurki(const vector<int>& pazymiai);
 double skaiciuotiMediana(vector<int>& pazymiai);
 void ivestiStudenta(vector<Studentas>& studentai, char pasirinkimas);

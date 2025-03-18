@@ -1,5 +1,14 @@
 #include "funkcijos.h"
 
+void pasirinktiKonteineri(StudentaiVariant &studentai, char pasirinkimas) {
+    switch (pasirinkimas) {
+        case '1': studentai = vector<Studentas>{}; break;
+        case '2': studentai = list<Studentas>{}; break;
+        case '3': studentai = deque<Studentas>{}; break;
+        default: cerr << "Neteisingas pasirinkimas!" << endl;
+    }
+}
+
 double skaiciuotiVidurki(const vector<int>& pazymiai) {
     if (pazymiai.empty()) return 0.0;
     int suma = 0;
@@ -155,7 +164,8 @@ void generuotiStudentus(vector<Studentas>& studentai, char pasirinkimas) {
     }
 }
 
-void nuskaitytiIsFailo(vector<Studentas>& studentai) {
+template <typename Container>
+void nuskaitytiIsFailo(Container& studentai) {
     string failoPavadinimas;
     ifstream failas;
 
