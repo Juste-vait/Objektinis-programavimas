@@ -131,7 +131,7 @@ void generuotiStudentus(vector<Studentas>& studentai, char pasirinkimas) {
             if (tesiame == 'N' || tesiame == 'n') break;
 
             if (tesiame != 'T' && tesiame != 't') {
-                throw invalid_argument("Neteisinga įvestis! Pasirinkite T arba N.\n");
+                throw invalid_argument("Neteisinga įvestis! Pasirinkite T arba N. ");
             }
 
         Studentas stud;
@@ -390,13 +390,15 @@ void grupuotiStudentus(vector<Studentas>& studentai, vector<Studentas>& kietekai
             }
 
             break;
-        } 
+        }
         catch (const invalid_argument& e) {
             cout << e.what() << " Bandykite dar kartą.\n";
             cin.clear(); 
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
         }
-    }
+        }
+
+        auto start = steady_clock::now();
 
         if (rusiavimoPasirinkimas == 'V' || rusiavimoPasirinkimas == 'v'){
             for (const auto& stud : studentai) {
@@ -416,6 +418,12 @@ void grupuotiStudentus(vector<Studentas>& studentai, vector<Studentas>& kietekai
                 }
             }
         }
+
+    kietekai.shrink_to_fit();
+    nuskriaustukai.shrink_to_fit();
+    
+    auto end = steady_clock::now();
+    cout << "Studentų grupavimas užtruko: " << duration_cast<milliseconds>(end - start).count() << " ms" << endl;
 
 }
 
@@ -453,10 +461,7 @@ void testavimoFunkcija_2(vector<Studentas>& studentai, vector<Studentas>& kietek
 
     nuskaitytiIsFailo(studentai);
 
-    auto start2 = steady_clock::now();
     grupuotiStudentus(studentai, kietekai, nuskriaustukai);
-    auto end2 = steady_clock::now();
-    cout << "Studentų grupavimas užtruko: " << duration_cast<milliseconds>(end2 - start2).count() << " ms" << endl;
 
     auto start3 = steady_clock::now();
     isvestiIDuFailus(kietekai, nuskriaustukai);

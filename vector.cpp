@@ -5,12 +5,23 @@
 int main() {
     srand(time(0));  
     vector<Studentas> studentai;
+    StudentaiVariant studentai; 
+    char pasirinkimasK;
     char pasirinkimas;
     int pasirinkimasMeniu;
     bool duomenysIsvesti = false;
     vector<int> dydziai = {1000, 10000, 100000, 1000000, 10000000};
     vector<Studentas> kietekai, nuskriaustukai;
     
+    cout << "Pasirinkite konteinerį:\n";
+    cout << "1 - vector\n";
+    cout << "2 - list\n";
+    cout << "3 - deque\n";
+    cout << "Jūsų pasirinkimas: ";
+    cin >> pasirinkimasK;
+
+    pasirinktiKonteineri(studentai, pasirinkimasK); 
+
     while (true) {
         try {
         cout << "\nPasirinkite veiksmą:\n";
@@ -20,7 +31,7 @@ int main() {
         cout << "4 - Baigti darbą\n";
         cout << "5 - Nuskaityti duomenis iš failo\n";
         cout << "6 - Generuoti failus\n";
-        cout << "7 - Sugrupuoti į galvočius ir nuskriaustukus\n";
+        cout << "7 - Paskirstyti studentus į galvočius ir nuskriaustukus\n";
         cout << "8 - testavimo funkcija 1\n";
         cout << "9 - testavimo funkcija 2\n";
         cout << "Jūsų pasirinkimas: ";
@@ -133,6 +144,13 @@ int main() {
     for (const auto& stud : studentai) {
         cout << left << setw(15) << stud.pavarde << setw(15) << stud.vardas << fixed << setprecision(2) << setw(15) << stud.galutinis << endl;
         }
+
+        visit([](auto &konteineris) {
+            for (const auto& stud : konteineris) {
+                cout << left << setw(15) << stud.pavarde << setw(15) << stud.vardas << fixed << setprecision(2) << setw(15) << stud.galutinis << endl;
+            }
+        }, studentai);
+    
     }
 
     return 0;
