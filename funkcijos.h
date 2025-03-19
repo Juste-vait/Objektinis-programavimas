@@ -91,7 +91,7 @@ void nuskaitytiIsFailo(konteineris &studentai) {
 
     auto end = steady_clock::now();
 
-    cout << "Duomenų nuskaitymas užtruko: " << duration_cast<milliseconds>(end - start).count() << " ms" << endl;
+    cout << "Duomenų nuskaitymas užtruko: " << duration_cast<seconds>(end - start).count() << " s" << endl;
 }
 
 template <typename konteineris>
@@ -127,7 +127,6 @@ void rusiuotiStudentus(konteineris &studentai){
 
     switch (rusiavimoPasirinkimas) {
         case 1:
-            // Rūšiavimas pagal vardą
             if constexpr (std::is_same<konteineris, std::list<Studentas>>::value) {
                 studentai.sort([](const Studentas& a, const Studentas& b) {
                     return a.vardas < b.vardas;
@@ -139,7 +138,6 @@ void rusiuotiStudentus(konteineris &studentai){
             }
             break;
         case 2:
-            // Rūšiavimas pagal pavardę
             if constexpr (std::is_same<konteineris, std::list<Studentas>>::value) {
                 studentai.sort([](const Studentas& a, const Studentas& b) {
                     return a.pavarde < b.pavarde;
@@ -151,33 +149,31 @@ void rusiuotiStudentus(konteineris &studentai){
             }
             break;
         case 3:
-            // Rūšiavimas pagal galutinį vidurkį
             if constexpr (std::is_same<konteineris, std::list<Studentas>>::value) {
                 studentai.sort([](const Studentas& a, const Studentas& b) {
-                    return a.galutinisVid > b.galutinisVid;
+                    return a.galutinisVid < b.galutinisVid;
                 });
             } else {
                 std::sort(studentai.begin(), studentai.end(), [](const Studentas& a, const Studentas& b) {
-                    return a.galutinisVid > b.galutinisVid;
+                    return a.galutinisVid < b.galutinisVid;
                 });
             }
             break;
         case 4:
-            // Rūšiavimas pagal galutinį medalį
             if constexpr (std::is_same<konteineris, std::list<Studentas>>::value) {
                 studentai.sort([](const Studentas& a, const Studentas& b) {
-                    return a.galutinisMed > b.galutinisMed;
+                    return a.galutinisMed < b.galutinisMed;
                 });
             } else {
                 std::sort(studentai.begin(), studentai.end(), [](const Studentas& a, const Studentas& b) {
-                    return a.galutinisMed > b.galutinisMed;
+                    return a.galutinisMed < b.galutinisMed;
                 });
             }
             break;
     }
     
     auto end1 = steady_clock::now();
-    cout << "Rūšiavimas užtruko: " << duration_cast<milliseconds>(end1 - start1).count() << " ms" << endl;
+    cout << "Rūšiavimas užtruko: " << duration_cast<seconds>(end1 - start1).count() << " s" << endl;
 }
 
 /*
@@ -230,7 +226,7 @@ void grupuotiStudentus(konteineris& studentai, konteineris& kietekai, konteineri
     
     
     auto end = steady_clock::now();
-    cout << "Studentų grupavimas užtruko: " << duration_cast<milliseconds>(end - start).count() << " ms" << endl;
+    cout << "Studentų grupavimas užtruko: " << duration_cast<seconds>(end - start).count() << " s" << endl;
 
 }
 
@@ -242,16 +238,16 @@ void isvestiIDuFailus(konteineris& kietekai, konteineris& nuskriaustukai){
         return;
     }
 
-    outNuskriaustukai << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(20) << "Galutinis (Vid.)" << setw(20) << "Galutinis (Med.)" << endl;
+    outNuskriaustukai << left << setw(20) << "Pavarde" << setw(20) << "Vardas" << setw(20) << "Galutinis (Vid.)" << setw(20) << "Galutinis (Med.)" << endl;
     outNuskriaustukai << string(70, '-') << endl;
-    outKietekai << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(20) << "Galutinis (Vid.)" << setw(20) << "Galutinis (Med.)" << endl;
+    outKietekai << left << setw(20) << "Pavarde" << setw(20) << "Vardas" << setw(20) << "Galutinis (Vid.)" << setw(20) << "Galutinis (Med.)" << endl;
     outKietekai << string(70, '-') << endl;
 
     for (const auto& stud : nuskriaustukai) {
-        outNuskriaustukai << left << setw(15) << stud.pavarde << setw(15) << stud.vardas << fixed << setprecision(2) << setw(20) << stud.galutinisVid << setw(20) << stud.galutinisMed << endl;
+        outNuskriaustukai << left << setw(20) << stud.pavarde << setw(20) << stud.vardas << fixed << setprecision(2) << setw(20) << stud.galutinisVid << setw(20) << stud.galutinisMed << endl;
     }
     for (const auto& stud : kietekai) {        
-        outKietekai << left << setw(15) << stud.pavarde << setw(15) << stud.vardas << fixed << setprecision(2) << setw(20) << stud.galutinisVid << setw(20) << stud.galutinisMed << endl;
+        outKietekai << left << setw(20) << stud.pavarde << setw(20) << stud.vardas << fixed << setprecision(2) << setw(20) << stud.galutinisVid << setw(20) << stud.galutinisMed << endl;
     }
 
     cout << "Failai \"nuskriaustukai.txt\" ir \"kietekai.txt\" sukurti!" << endl;
@@ -264,7 +260,6 @@ void testavimoFunkcija_2(vector<Studentas>& studentai, vector<Studentas>& kietek
 
 template <typename konteineris>
 void testavimoFunkcija_3(konteineris &studentai, konteineris &kietekai, konteineris &nuskriaustukai){
-    auto start = steady_clock::now();
 
     nuskaitytiIsFailo(studentai);
 
@@ -274,8 +269,6 @@ void testavimoFunkcija_3(konteineris &studentai, konteineris &kietekai, konteine
 
     isvestiIDuFailus(kietekai, nuskriaustukai);
 
-    auto end = steady_clock::now();
-    cout << "Visos funkcijos veikimo laikas: " << duration_cast<milliseconds>(end - start).count() << " ms" << endl;
 }
 
 #endif
