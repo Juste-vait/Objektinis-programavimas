@@ -1,14 +1,5 @@
 #include "funkcijos.h"
 
-void pasirinktiKonteineri(studentaiVariant &studentai, char pasirinkimasK) {
-    switch (pasirinkimasK) {
-        case '1': studentai = vector<Studentas>{}; break;
-        case '2': studentai = list<Studentas>{}; break;
-        case '3': studentai = deque<Studentas>{}; break;
-        default: cerr << "Neteisingas pasirinkimas!" << endl;
-    }
-}
-
 double skaiciuotiVidurki(const vector<int>& pazymiai) {
     if (pazymiai.empty()) return 0.0;
     int suma = 0;
@@ -26,7 +17,7 @@ double skaiciuotiMediana(vector<int>& pazymiai) {
         return pazymiai[n / 2];
     }
 }
-
+/*
 void ivestiStudenta(vector<Studentas>& studentai, char pasirinkimas) {
     Studentas stud;
     while (true) {  
@@ -163,121 +154,9 @@ void generuotiStudentus(vector<Studentas>& studentai, char pasirinkimas) {
     }
     }
 }
+*/
 
-void nuskaitytiIsFailo(studentaiVariant& studentai) {
-    string failoPavadinimas;
-    ifstream failas;
-
-    while (true) {
-        try {
-            cout << "\nĮveskite failo pavadinimą: ";
-            cin >> failoPavadinimas;
-            
-            failas.open(failoPavadinimas);
-            if (!failas) throw runtime_error("Nepavyko atidaryti failo!");
-            
-            break; 
-        }
-        catch (const exception& e) {
-            cout << e.what() << "Bandykite dar kartą.\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-    }
-
-    auto start = steady_clock::now();
-    
-    string eilute;
-    getline(failas, eilute); 
-    while (getline(failas, eilute)) {
-        istringstream line(eilute);
-        Studentas stud;
-        line >> stud.vardas >> stud.pavarde;
-        
-        int rezultatas;
-        while (line >> rezultatas) {
-            stud.namuDarbai.push_back(rezultatas);
-        }
-        
-        stud.egzaminas = stud.namuDarbai.back(); 
-        stud.namuDarbai.pop_back(); 
-
-        double vidurkis = skaiciuotiVidurki(stud.namuDarbai);
-        stud.galutinisVid = 0.4 * vidurkis + 0.6 * stud.egzaminas;
-
-        double mediana = skaiciuotiMediana(stud.namuDarbai);
-        stud.galutinisMed = 0.4 * mediana + 0.6 * stud.egzaminas;
-        
-        visit([&](auto& container) {
-            container.push_back(stud); 
-        }, studentai);
-    }
-    failas.close();
-
-    auto end = steady_clock::now();
-
-    cout << "Duomenų nuskaitymas užtruko: " << duration_cast<milliseconds>(end - start).count() << " ms" << endl;
-}
-
-void rusiuotiStudentus(studentaiVariant& studentai){
-    int rusiavimoPasirinkimas;
-
-    while (true) {
-        try {
-            cout << "Pasirinkite rikiavimo būdą:\n";
-            cout << "1 - Pagal vardą (A-Z)\n";
-            cout << "2 - Pagal pavardę (A-Z)\n";
-            cout << "3 - Pagal galutinį vidurkį (mažėjančiai)\n";
-            cout << "4 - Pagal galutinę medianą (mažėjančiai)\n";
-            cout << "Jūsų pasirinkimas: ";
-            cin >> rusiavimoPasirinkimas;
-
-            if (cin.fail()) {
-                throw invalid_argument("Neteisinga įvestis! Įveskite tik skaičių.");
-            }
-            if (rusiavimoPasirinkimas < 1 || rusiavimoPasirinkimas > 4) {
-                throw out_of_range("Pasirinkimas turi būti nuo 1 iki 4.");
-            }
-            break;
-        }
-        catch (const exception &e) {
-            cout << e.what() << " Bandykite dar kartą.\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-    }
-
-    auto start1 = steady_clock::now();
-
-    visit([&](auto& studentaiContainer) {
-    switch (rusiavimoPasirinkimas) {
-        case 1:
-            sort(studentai.begin(), studentai.end(), [](const Studentas& a, const Studentas& b) {
-                return a.vardas < b.vardas;
-            });
-            break;
-        case 2:
-            sort(studentai.begin(), studentai.end(), [](const Studentas& a, const Studentas& b) {
-                return a.pavarde < b.pavarde;
-            });
-            break;
-        case 3:
-            sort(studentai.begin(), studentai.end(), [](const Studentas& a, const Studentas& b) {
-                return a.galutinisVid > b.galutinisVid;
-            });
-            break;
-        case 4:
-            sort(studentai.begin(), studentai.end(), [](const Studentas& a, const Studentas& b) {
-                return a.galutinisMed > b.galutinisMed;
-            });
-            break;
-    }
-}, studentai);
-
-    auto end1 = steady_clock::now();
-    cout << "Rūšiavimas užtruko: " << duration_cast<milliseconds>(end1 - start1).count() << " ms" << endl;
-}
-
+/*
 void isvestiDuomenis(vector<Studentas>& studentai) {
     string pasirinkimasIsvesti;
 
@@ -388,89 +267,9 @@ void generuotiFailus(vector<int>& dydziai) {
         cout << "Generavimas užtruko: " << chrono::duration_cast<chrono::milliseconds>(end - start).count() << " ms\n";
     }
 }
+*/
 
-void grupuotiStudentus(studentaiVariant& studentai, studentaiVariant& kietekai, studentaiVariant& nuskriaustukai){
-    char rusiavimoPasirinkimas;
-
-    while (true) {
-        try {
-            cout << "Pasirinkite pagal ką bus surūšiuoti studentai (V - pagal vidurkį, M - pagal medianą): ";
-            cin >> rusiavimoPasirinkimas;
-
-            if (rusiavimoPasirinkimas != 'V' && rusiavimoPasirinkimas != 'v' && rusiavimoPasirinkimas != 'M' && rusiavimoPasirinkimas != 'm') {
-                throw invalid_argument("Neteisinga įvestis! Pasirinkite V arba M.");
-            }
-
-            break;
-        }
-        catch (const invalid_argument& e) {
-            cout << e.what() << " Bandykite dar kartą.\n";
-            cin.clear(); 
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
-        }
-        }
-
-        auto start = steady_clock::now();
-
-        visit([&](auto& studentaiContainer) {
-            if (rusiavimoPasirinkimas == 'V' || rusiavimoPasirinkimas == 'v') {
-                for (const auto& stud : studentaiContainer) {
-                    if (stud.galutinisVid >= 5) {
-                        visit([&](auto& kietekaiContainer) { kietekaiContainer.push_back(stud); }, kietekai);
-                    } else {
-                        visit([&](auto& nuskriaustukaiContainer) { nuskriaustukaiContainer.push_back(stud); }, nuskriaustukai);
-                    }   
-                }
-            } else {
-                for (const auto& stud : studentaiContainer) {
-                    if (stud.galutinisMed >= 5) {
-                        visit([&](auto& kietekaiContainer) { kietekaiContainer.push_back(stud); }, kietekai);
-                    } else {
-                        visit([&](auto& nuskriaustukaiContainer) { nuskriaustukaiContainer.push_back(stud); }, nuskriaustukai);
-                    }
-                }
-            }
-        }, studentai);
-    
-        visit([](auto& container) {
-            if constexpr (is_same_v<decltype(container), vector<Studentas>>) {
-                container.shrink_to_fit();
-            }
-        }, kietekai);
-    
-        visit([](auto& container) {
-            if constexpr (is_same_v<decltype(container), vector<Studentas>>) {
-                container.shrink_to_fit();
-            }
-        }, nuskriaustukai);
-    
-    auto end = steady_clock::now();
-    cout << "Studentų grupavimas užtruko: " << duration_cast<milliseconds>(end - start).count() << " ms" << endl;
-
-}
-
-void isvestiIDuFailus(vector<Studentas>& kietekai, vector<Studentas>& nuskriaustukai){
-    ofstream outNuskriaustukai("nuskriaustukai.txt"), outKietekai("kietekai.txt");
-    if (!outNuskriaustukai || !outKietekai) {
-        cerr << "Nepavyko sukurti rezultatų failų!" << endl;
-        return;
-    }
-
-    outNuskriaustukai << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(20) << "Galutinis (Vid.)" << setw(20) << "Galutinis (Med.)" << endl;
-    outNuskriaustukai << string(70, '-') << endl;
-    outKietekai << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << setw(20) << "Galutinis (Vid.)" << setw(20) << "Galutinis (Med.)" << endl;
-    outKietekai << string(70, '-') << endl;
-
-    for (const auto& stud : nuskriaustukai) {
-        outNuskriaustukai << left << setw(15) << stud.pavarde << setw(15) << stud.vardas << fixed << setprecision(2) << setw(20) << stud.galutinisVid << setw(20) << stud.galutinisMed << endl;
-    }
-    for (const auto& stud : kietekai) {        
-        outKietekai << left << setw(15) << stud.pavarde << setw(15) << stud.vardas << fixed << setprecision(2) << setw(20) << stud.galutinisVid << setw(20) << stud.galutinisMed << endl;
-    }
-
-    cout << "Failai \"nuskriaustukai.txt\" ir \"kietekai.txt\" sukurti!" << endl;
-}
-
+/*
 void testavimoFunkcija_1(vector<int> dydziai){
     auto start = steady_clock::now();
     generuotiFailus(dydziai);
@@ -493,16 +292,4 @@ void testavimoFunkcija_2(vector<Studentas>& studentai, vector<Studentas>& kietek
     auto end = steady_clock::now();
     cout << "Visos funkcijos veikimo laikas: " << duration_cast<milliseconds>(end - start).count() << " ms" << endl;
 }
-
-void testavimoFunkcija_3(studentaiVariant &studentai, studentaiVariant &kietekai, studentaiVariant &nuskriaustukai){
-    auto start = steady_clock::now();
-
-    nuskaitytiIsFailo(studentai);
-
-    rusiuotiStudentus(studentai);
-
-    grupuotiStudentus(studentai, kietekai, nuskriaustukai);
-
-    auto end = steady_clock::now();
-    cout << "Visos funkcijos veikimo laikas: " << duration_cast<milliseconds>(end - start).count() << " ms" << endl;
-}
+*/
