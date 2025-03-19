@@ -103,8 +103,8 @@ void rusiuotiStudentus(konteineris &studentai){
             cout << "Pasirinkite rikiavimo būdą:\n";
             cout << "1 - Pagal vardą (A-Z)\n";
             cout << "2 - Pagal pavardę (A-Z)\n";
-            cout << "3 - Pagal galutinį vidurkį (mažėjančiai)\n";
-            cout << "4 - Pagal galutinę medianą (mažėjančiai)\n";
+            cout << "3 - Pagal galutinį vidurkį (didėjančiai)\n";
+            cout << "4 - Pagal galutinę medianą (didėjančiai)\n";
             cout << "Jūsų pasirinkimas: ";
             cin >> rusiavimoPasirinkimas;
 
@@ -173,7 +173,7 @@ void rusiuotiStudentus(konteineris &studentai){
     }
     
     auto end1 = steady_clock::now();
-    cout << "Rūšiavimas užtruko: " << duration_cast<seconds>(end1 - start1).count() << " s" << endl;
+    cout << "Rikiavimas užtruko: " << duration_cast<seconds>(end1 - start1).count() << " s" << endl;
 }
 
 /*
