@@ -10,7 +10,11 @@ int main() {
     //vector<int> dydziai = {1000, 10000, 100000, 1000000, 10000000};
     
     int pasirinkimasK;
-    cout << "Pasirinkite konteinerį: 1 - vector, 2 - deque, 3 - list: ";
+    cout << "Pasirinkite konteinerį: \n";
+    cout << "1 - vector\n";
+    cout << "2 - deque\n";
+    cout << "3 - list\n";
+    cout << "Pasirinkimas: ";
     cin >> pasirinkimasK;
 
     if (pasirinkimasK == 1) {
