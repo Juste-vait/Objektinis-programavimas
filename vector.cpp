@@ -4,22 +4,32 @@
 
 int main() {
     srand(time(0));  
-    char pasirinkimasK;
     char pasirinkimas;
     int pasirinkimasMeniu;
     bool duomenysIsvesti = false;
-    vector<int> dydziai = {1000, 10000, 100000, 1000000, 10000000};
-    studentaiVariant studentai, kietekai, nuskriaustukai;
+    //vector<int> dydziai = {1000, 10000, 100000, 1000000, 10000000};
     
-    cout << "Pasirinkite konteinerį:\n";
-    cout << "1 - vector\n";
-    cout << "2 - list\n";
-    cout << "3 - deque\n";
-    cout << "Jūsų pasirinkimas: ";
+    int pasirinkimasK;
+    cout << "Pasirinkite konteinerį: 1 - vector, 2 - deque, 3 - list: ";
     cin >> pasirinkimasK;
 
-    pasirinktiKonteineri(studentai, pasirinkimasK); 
+    if (pasirinkimasK == 1) {
+        vector<Studentas> studentai, kietekai, nuskriaustukai;
+        testavimoFunkcija_3(studentai, kietekai, nuskriaustukai);
+    } 
+    else if (pasirinkimasK == 2) {
+        deque<Studentas> studentai, kietekai, nuskriaustukai;
+        testavimoFunkcija_3(studentai, kietekai, nuskriaustukai);
+    } 
+    else if (pasirinkimasK == 3) {
+        list<Studentas> studentai, kietekai, nuskriaustukai;
+        testavimoFunkcija_3(studentai, kietekai, nuskriaustukai);
+    } 
+    else {
+        cout << "Neteisingas pasirinkimas!" << endl;
+    }
 
+    /*
     while (true) {
         try {
         cout << "\nPasirinkite veiksmą:\n";
@@ -151,6 +161,7 @@ int main() {
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
     }
+    
 
     if (!duomenysIsvesti) {
     cout << "\n---------------------------------------------------\n";
@@ -174,6 +185,6 @@ int main() {
         }, studentai);
     
     }
-
+    */
     return 0;
 }
