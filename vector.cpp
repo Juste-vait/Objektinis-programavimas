@@ -1,4 +1,4 @@
-//kompiliuot: g++ -std=c++11 -o main vector.cpp
+//kompiliuot: g++ -std=c++17 -o main vector.cpp funkcijos.cpp
 
 #include "funkcijos.h"
 

@@ -37,26 +37,6 @@ struct Studentas {
             namuDarbai = nullptr;
         }
     }
-
-    Studentas& operator=(const Studentas& other) {
-        if (this != &other) {
-            delete[] namuDarbai;
-            
-            vardas = other.vardas;
-            pavarde = other.pavarde;
-            egzaminas = other.egzaminas;
-            galutinis = other.galutinis;
-            namuDarbaiKiekis = other.namuDarbaiKiekis;
-            
-            if (other.namuDarbai) {
-                namuDarbai = new int[namuDarbaiKiekis];
-                copy(other.namuDarbai, other.namuDarbai + namuDarbaiKiekis, namuDarbai);
-            } else {
-                namuDarbai = nullptr;
-            }
-        }
-        return *this;
-    }
 };
 
 double skaiciuotiVidurki(int* pazymiai, int kiekis) {
@@ -242,8 +222,7 @@ int main() {
     cout << "---------------------------------------------------\n";
 
     for (const auto& stud : studentai) {
-        cout << left << setw(15) << stud.pavarde << setw(15) << stud.vardas
-             << fixed << setprecision(2) << setw(15) << stud.galutinis << endl;
+        cout << left << setw(15) << stud.pavarde << setw(15) << stud.vardas << fixed << setprecision(2) << setw(15) << stud.galutinis << endl;
     }
 
     return 0;
