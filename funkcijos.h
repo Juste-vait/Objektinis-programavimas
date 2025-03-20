@@ -265,19 +265,30 @@ void testavimoFunkcija_3(konteineris &studentai, konteineris &kietekai, konteine
 
     rusiuotiStudentus(studentai);
 
-    cout << "Pasirinkite strategiją:\n ";
-    cout << "1 strategija\n ";
-    cout << "2 strategija\n ";
-    cout << "3 strategija\n ";
-    cout << "Pasirinkimas: ";
-    cin >> pasirinkimas;
+    while (true){
+        cout << "Pasirinkite strategiją:\n ";
+        cout << "1 strategija\n ";
+        cout << "2 strategija\n ";
+        cout << "3 strategija\n ";
+        cout << "Pasirinkimas: ";
+        cin >> pasirinkimas;
+
+        if (cin.fail()) { 
+            cout << "Neteisinga įvestis! Įveskite skaičių 1, 2 arba 3.\n" << endl;
+            cin.clear(); 
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+            continue; 
+        }
     
-    if (pasirinkimas == 1){
-        grupuotiStudentus(studentai, kietekai, nuskriaustukai);}
-    else if (pasirinkimas == 2){
-        strategija_2(studentai, nuskriaustukai);}
-    else{
+        if (pasirinkimas == 1){
+            grupuotiStudentus(studentai, kietekai, nuskriaustukai);}
+        else if (pasirinkimas == 2){
+            strategija_2(studentai, nuskriaustukai);}
+        else if (pasirinkimas == 3){
         strategija_3(studentai, nuskriaustukai);}
+        else {
+            cout << "Neteisingas pasirinkimas!\n" << endl;}
+    }
 
     isvestiIDuFailus(kietekai, nuskriaustukai);
 }
