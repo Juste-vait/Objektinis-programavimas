@@ -260,20 +260,32 @@ void testavimoFunkcija_2(vector<Studentas>& studentai, vector<Studentas>& kietek
 
 template <typename konteineris>
 void testavimoFunkcija_3(konteineris &studentai, konteineris &kietekai, konteineris &nuskriaustukai){
-
+    int pasirinkimas;
     nuskaitytiIsFailo(studentai);
 
     rusiuotiStudentus(studentai);
 
-    grupuotiStudentus(studentai, kietekai, nuskriaustukai);
+    cout << "Pasirinkite strategiją:\n ";
+    cout << "1 strategija\n ";
+    cout << "2 strategija\n ";
+    cout << "3 strategija\n ";
+    cout << "Pasirinkimas: ";
+    cin >> pasirinkimas;
+    
+    if (pasirinkimas == 1){
+        grupuotiStudentus(studentai, kietekai, nuskriaustukai);}
+    else if (pasirinkimas == 2){
+        strategija_2(studentai, nuskriaustukai);}
+    else{
+        strategija_3(studentai, nuskriaustukai);}
 
     isvestiIDuFailus(kietekai, nuskriaustukai);
-
 }
 
 template <typename konteineris>
 void strategija_2(konteineris& studentai, konteineris& nuskriaustukai) {
-    
+    char rusiavimoPasirinkimas;
+
     while (true) {
         try {
             cout << "Pasirinkite pagal ką bus surūšiuoti studentai (V - pagal vidurkį, M - pagal medianą): ";
@@ -309,6 +321,7 @@ void strategija_2(konteineris& studentai, konteineris& nuskriaustukai) {
 
 template <typename konteineris>
 void strategija_3(konteineris& studentai, konteineris& nuskriaustukai) {
+    char rusiavimoPasirinkimas;
 
     while (true) {
         try {
