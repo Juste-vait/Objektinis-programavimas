@@ -285,8 +285,22 @@ void strategija_2(konteineris& studentai, konteineris& nuskriaustukai) {
     }
 
     auto end = steady_clock::now();
-    cout << "2 strategija : " 
-         << duration_cast<milliseconds>(end - start).count() << " s" << endl;
+    cout << "2 strategija : " << duration_cast<seconds>(end - start).count() << " s" << endl;
+}
+
+template <typename konteineris>
+void strategija_3(konteineris& studentai, konteineris& nuskriaustukai) {
+    auto start = steady_clock::now();
+    
+    auto it = partition(studentai.begin(), studentai.end(), [](const Studentas& stud) {
+        return stud.galutinisVid >= 5;
+    });
+    
+    nuskriaustukai.assign(it, studentai.end());
+    studentai.erase(it, studentai.end());
+    
+    auto end = steady_clock::now();
+    cout << "3 strategija: " << duration_cast<seconds>(end - start).count() << " ms" << endl;
 }
 
 #endif
