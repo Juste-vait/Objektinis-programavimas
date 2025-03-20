@@ -91,7 +91,7 @@ void nuskaitytiIsFailo(konteineris &studentai) {
 
     auto end = steady_clock::now();
 
-    cout << "Duomenų nuskaitymas užtruko: " << duration_cast<seconds>(end - start).count() << " s" << endl;
+    cout << "Duomenų nuskaitymas užtruko: " << duration_cast<seconds>(end - start).count() << " s\n" << endl;
 }
 
 template <typename konteineris>
@@ -173,7 +173,7 @@ void rusiuotiStudentus(konteineris &studentai){
     }
     
     auto end1 = steady_clock::now();
-    cout << "Rikiavimas užtruko: " << duration_cast<seconds>(end1 - start1).count() << " s" << endl;
+    cout << "Rikiavimas užtruko: " << duration_cast<seconds>(end1 - start1).count() << " s\n" << endl;
 }
 
 /*
@@ -226,12 +226,19 @@ void grupuotiStudentus(konteineris& studentai, konteineris& kietekai, konteineri
     
     
     auto end = steady_clock::now();
+
+    if constexpr (is_same_v<konteineris, vector<Studentas>> || is_same_v<konteineris, deque<Studentas>>) {
+        studentai.shrink_to_fit();
+    }
+
     cout << "Studentų grupavimas užtruko: " << duration_cast<seconds>(end - start).count() << " s" << endl;
 
 }
 
 template <typename konteineris>
-void isvestiIDuFailus(konteineris& kietekai, konteineris& nuskriaustukai){
+void isvestiIDuFailus(konteineris& kietekai, konteineris& nuskriaustukai, bool strategija, konteineris& studentai){
+    strategija = true;
+    
     ofstream outNuskriaustukai("nuskriaustukai.txt"), outKietekai("kietekai.txt");
     if (!outNuskriaustukai || !outKietekai) {
         cerr << "Nepavyko sukurti rezultatų failų!" << endl;
@@ -250,6 +257,12 @@ void isvestiIDuFailus(konteineris& kietekai, konteineris& nuskriaustukai){
         outKietekai << left << setw(20) << stud.pavarde << setw(20) << stud.vardas << fixed << setprecision(2) << setw(20) << stud.galutinisVid << setw(20) << stud.galutinisMed << endl;
     }
 
+    if (strategija) {
+        for (const auto& stud : studentai) {        
+            outKietekai << left << setw(20) << stud.pavarde << setw(20) << stud.vardas << fixed << setprecision(2) << setw(20) << stud.galutinisVid << setw(20) << stud.galutinisMed << endl;
+        }
+    }
+
     cout << "Failai \"nuskriaustukai.txt\" ir \"kietekai.txt\" sukurti!" << endl;
 }
 
@@ -261,6 +274,8 @@ void testavimoFunkcija_2(vector<Studentas>& studentai, vector<Studentas>& kietek
 template <typename konteineris>
 void testavimoFunkcija_3(konteineris &studentai, konteineris &kietekai, konteineris &nuskriaustukai){
     int pasirinkimas;
+    bool strategija = false;
+
     nuskaitytiIsFailo(studentai);
 
     rusiuotiStudentus(studentai);
@@ -281,16 +296,20 @@ void testavimoFunkcija_3(konteineris &studentai, konteineris &kietekai, konteine
         }
     
         if (pasirinkimas == 1){
-            grupuotiStudentus(studentai, kietekai, nuskriaustukai);}
+            grupuotiStudentus(studentai, kietekai, nuskriaustukai);
+            break;}
         else if (pasirinkimas == 2){
-            strategija_2(studentai, nuskriaustukai);}
+            bool strategija = true;
+            strategija_2(studentai, nuskriaustukai);
+            break;}
         else if (pasirinkimas == 3){
-        strategija_3(studentai, nuskriaustukai);}
+            strategija_3(studentai, nuskriaustukai);
+            break;}
         else {
             cout << "Neteisingas pasirinkimas!\n" << endl;}
     }
 
-    isvestiIDuFailus(kietekai, nuskriaustukai);
+    isvestiIDuFailus(kietekai, nuskriaustukai, strategija, studentai);
 }
 
 template <typename konteineris>
@@ -325,8 +344,12 @@ void strategija_2(konteineris& studentai, konteineris& nuskriaustukai) {
             ++it;
         }
     }
-
     auto end = steady_clock::now();
+
+    if constexpr (is_same_v<konteineris, vector<Studentas>> || is_same_v<konteineris, deque<Studentas>>) {
+        studentai.shrink_to_fit();
+    }
+
     cout << "2 strategija : " << duration_cast<seconds>(end - start).count() << " s" << endl;
 }
 
@@ -366,7 +389,12 @@ void strategija_3(konteineris& studentai, konteineris& nuskriaustukai) {
     studentai.erase(it, studentai.end());
     
     auto end = steady_clock::now();
-    cout << "3 strategija: " << duration_cast<seconds>(end - start).count() << " ms" << endl;
+
+    if constexpr (is_same_v<konteineris, vector<Studentas>> || is_same_v<konteineris, deque<Studentas>>) {
+        studentai.shrink_to_fit();
+    }
+
+    cout << "3 strategija: " << duration_cast<seconds>(end - start).count() << " s" << endl;
 }
 
 #endif
