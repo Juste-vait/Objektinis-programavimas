@@ -271,4 +271,22 @@ void testavimoFunkcija_3(konteineris &studentai, konteineris &kietekai, konteine
 
 }
 
+template <typename konteineris>
+void strategija_2(konteineris& studentai, konteineris& nuskriaustukai) {
+    auto start = steady_clock::now();
+
+    for (auto it = studentai.begin(); it != studentai.end();) {
+        if (it->galutinisVid < 5) {
+            nuskriaustukai.push_back(*it);
+            it = studentai.erase(it); 
+        } else {
+            ++it;
+        }
+    }
+
+    auto end = steady_clock::now();
+    cout << "2 strategija : " 
+         << duration_cast<milliseconds>(end - start).count() << " s" << endl;
+}
+
 #endif
