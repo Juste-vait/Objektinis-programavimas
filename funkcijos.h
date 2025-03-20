@@ -273,10 +273,29 @@ void testavimoFunkcija_3(konteineris &studentai, konteineris &kietekai, konteine
 
 template <typename konteineris>
 void strategija_2(konteineris& studentai, konteineris& nuskriaustukai) {
+    
+    while (true) {
+        try {
+            cout << "Pasirinkite pagal ką bus surūšiuoti studentai (V - pagal vidurkį, M - pagal medianą): ";
+            cin >> rusiavimoPasirinkimas;
+
+            if (rusiavimoPasirinkimas != 'V' && rusiavimoPasirinkimas != 'v' && rusiavimoPasirinkimas != 'M' && rusiavimoPasirinkimas != 'm') {
+                throw invalid_argument("Neteisinga įvestis! Pasirinkite V arba M.");
+            }
+
+            break;
+        }
+        catch (const invalid_argument& e) {
+            cout << e.what() << " Bandykite dar kartą.\n";
+            cin.clear(); 
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+        }
+        }
+
     auto start = steady_clock::now();
 
     for (auto it = studentai.begin(); it != studentai.end();) {
-        if (it->galutinisVid < 5) {
+        if ((rusiavimoPasirinkimas == 'V' || rusiavimoPasirinkimas == 'v') ? it->galutinisVid < 5 : it->galutinisMed < 5) {
             nuskriaustukai.push_back(*it);
             it = studentai.erase(it); 
         } else {
@@ -290,13 +309,36 @@ void strategija_2(konteineris& studentai, konteineris& nuskriaustukai) {
 
 template <typename konteineris>
 void strategija_3(konteineris& studentai, konteineris& nuskriaustukai) {
+
+    while (true) {
+        try {
+            cout << "Pasirinkite pagal ką bus surūšiuoti studentai (V - pagal vidurkį, M - pagal medianą): ";
+            cin >> rusiavimoPasirinkimas;
+
+            if (rusiavimoPasirinkimas != 'V' && rusiavimoPasirinkimas != 'v' && rusiavimoPasirinkimas != 'M' && rusiavimoPasirinkimas != 'm') {
+                throw invalid_argument("Neteisinga įvestis! Pasirinkite V arba M.");
+            }
+
+            break;
+        }
+        catch (const invalid_argument& e) {
+            cout << e.what() << " Bandykite dar kartą.\n";
+            cin.clear(); 
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+        }
+        }
+
     auto start = steady_clock::now();
     
-    auto it = partition(studentai.begin(), studentai.end(), [](const Studentas& stud) {
-        return stud.galutinisVid >= 5;
+    auto it = partition(studentai.begin(), studentai.end(), [rusiavimoPasirinkimas](const Studentas& stud) {
+        if (rusiavimoPasirinkimas == 'V' || rusiavimoPasirinkimas == 'v') {
+            return stud.galutinisVid >= 5; 
+        } else {
+            return stud.galutinisMed >= 5;
+        }
     });
     
-    nuskriaustukai.assign(it, studentai.end());
+    nuskriaustukai.assign(it, studentai.end()); 
     studentai.erase(it, studentai.end());
     
     auto end = steady_clock::now();
