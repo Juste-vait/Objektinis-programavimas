@@ -103,8 +103,8 @@ void rusiuotiStudentus(konteineris &studentai){
             cout << "Pasirinkite rikiavimo būdą:\n";
             cout << "1 - Pagal vardą (A-Z)\n";
             cout << "2 - Pagal pavardę (A-Z)\n";
-            cout << "3 - Pagal galutinį vidurkį (didėjančiai)\n";
-            cout << "4 - Pagal galutinę medianą (didėjančiai)\n";
+            cout << "3 - Pagal galutinį vidurkį\n";
+            cout << "4 - Pagal galutinę medianą\n";
             cout << "Jūsų pasirinkimas: ";
             cin >> rusiavimoPasirinkimas;
 
@@ -316,6 +316,56 @@ template <typename konteineris>
 void strategija_2(konteineris& studentai, konteineris& nuskriaustukai) {
     char rusiavimoPasirinkimas;
 
+    int rusiavimoPasirinkimass;
+
+    while (true) {
+        try {
+            cout << "Pasirinkite rikiavimo būdą:\n";
+            cout << "1 - Pagal galutinį vidurkį\n";
+            cout << "2 - Pagal galutinę medianą\n";
+            cout << "Jūsų pasirinkimas: ";
+            cin >> rusiavimoPasirinkimass;
+
+            if (cin.fail()) {
+                throw invalid_argument("Neteisinga įvestis! Įveskite tik skaičių.");
+            }
+            if (rusiavimoPasirinkimass < 1 || rusiavimoPasirinkimass > 2) {
+                throw out_of_range("Pasirinkimas turi būti nuo 1 iki 4.");
+            }
+            break;
+        }
+        catch (const exception &e) {
+            cout << e.what() << " Bandykite dar kartą.\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    }
+
+    switch (rusiavimoPasirinkimass) {
+        case 1:
+            if constexpr (std::is_same<konteineris, std::list<Studentas>>::value) {
+                studentai.sort([](const Studentas& a, const Studentas& b) {
+                    return a.galutinisVid > b.galutinisVid;
+                });
+            } else {
+                std::sort(studentai.begin(), studentai.end(), [](const Studentas& a, const Studentas& b) {
+                    return a.galutinisVid > b.galutinisVid;
+                });
+            }
+            break;
+        case 2:
+            if constexpr (std::is_same<konteineris, std::list<Studentas>>::value) {
+                studentai.sort([](const Studentas& a, const Studentas& b) {
+                    return a.galutinisMed > b.galutinisMed;
+                });
+            } else {
+                std::sort(studentai.begin(), studentai.end(), [](const Studentas& a, const Studentas& b) {
+                    return a.galutinisMed > b.galutinisMed;
+                });
+            }
+            break;
+        }
+
     while (true) {
         try {
             cout << "Pasirinkite pagal ką bus surūšiuoti studentai (V - pagal vidurkį, M - pagal medianą): ";
@@ -336,19 +386,24 @@ void strategija_2(konteineris& studentai, konteineris& nuskriaustukai) {
 
     auto start = steady_clock::now();
 
-    for (auto it = studentai.begin(); it != studentai.end();) {
-        if ((rusiavimoPasirinkimas == 'V' || rusiavimoPasirinkimas == 'v') ? it->galutinisVid < 5 : it->galutinisMed < 5) {
-            nuskriaustukai.push_back(*it);
-            it = studentai.erase(it); 
-        } else {
-            ++it;
+    if (rusiavimoPasirinkimas == 'V' || rusiavimoPasirinkimas == 'v') {
+        while (!studentai.empty() && studentai.back().galutinisVid < 5) {
+            nuskriaustukai.push_back(studentai.back());
+            studentai.pop_back();
+        }
+    } else {
+        while (!studentai.empty() && studentai.back().galutinisMed < 5) {
+            nuskriaustukai.push_back(studentai.back());
+            studentai.pop_back();
         }
     }
-    auto end = steady_clock::now();
-
-    if constexpr (is_same_v<konteineris, vector<Studentas>> || is_same_v<konteineris, deque<Studentas>>) {
+    
+    if constexpr (std::is_same_v<konteineris, vector<Studentas>>) {
+        nuskriaustukai.shrink_to_fit();
         studentai.shrink_to_fit();
-    }
+    }    
+
+    auto end = steady_clock::now();
 
     cout << "2 strategija : " << duration_cast<seconds>(end - start).count() << " s" << endl;
 }
