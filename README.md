@@ -1,29 +1,63 @@
-v1.0
-Pridėtas naujas meniu, konteinerio pasirinkimui. Užkomentuotos nereikalingos funkcijos bei pridėta nauja testavimo funkcija, kuri priima įvairius konteinerius bei matuoja nuskaitymo iš failo, rikiavimo bei grupavimo laikus.
+v1.0 galutinis
 
 Kopiuterio parametrai:
 CPU - Apple M3
 RAM - 16 GB
 SSD - 494,38 GB
 
+Programos paleidimas su "Makefile":
+1) Parsisiųsti source code
+2) naudojantis cd įeiti į reikiamą folder'į
+3) Susiinstaliuoti make: https://stackoverflow.com/questions/32127524/how-to-install-and-use-make-in-windows
+4) Sukompiliuoti programą: make
+5) Paleisti programą: make run
+
+Programa leidžia pasirinkti norimą konteinerį (vector, deque, list) ir su juo atlieka įvairius veiksmus:
+nuskaito duomenis iš norimo failo, 
+surikiuoja pagal norimą parametrą,
+sugrupuoja pagal norimą strategiją ir parametrą,
+ir išveda į du failus pagal grupes.
+
+Programos tikslas - ištestuoti skirtingų konteinerių atminties naudojimą ir veikimo spartą nuskaitant iš failo, rikiuojant bei grupuojant skirtingomis strategijomis.
+
+Pirmas meniu pasirinkimas:
+1 - vector
+2 - deque
+3- list
+
+Rikiavimo pasirinkimas:
+1 - pagal vardą
+2 - pagal pavardę
+3 - pagal vidurkį
+4 - pagal medianą
+
+Grupavimo pasirinkimas (strategija):
+1 - strategija (iš pirminio "studentai" konteinerio pagal pažymius studentus perkelia į du naujus "kietekai" ir "nuskriaustukai" koonteinerius. Studento duomenus lieka dviejuose konteineriuose: "studentai" ir viename iš naujų).
+2 - strategija ("studentai" yra surūšiuojami mažėjimo tvarka (neįeina į laiko skaičiavimą) . Iš pirminio "studentai" konteinerio pagal pažymius reikiami studentai yra perkeliami į "nuskriaustukai" konteinerį ir ištrinami iš "studentai" konteinerio, o "kietekai" lieka "studentai" konteineryje).
+3 - startegija (naudojami STL algoritmas: std::partition. Iš pradinio studentai konteinerio visi studentai yra perrūšiuojami taip, kad pirmiausia būtų tie, kurių galutinis balas yra ≥5 o gale tie, kurių balas <5. Gale esantys studentai yra perkeliami į "nuskriaustukai" konteinerį ir pašalinami iš "studentai" konteinerio).
+
+Grupavimo pasirinkimas (parametras):
+V - pagal vidurki
+M - pagal medianą
+
+
+Išvados: 
+nuskaitymas greičiausiai veikia su vector
+rikiavimas vector ir deque taip pat, list lėčiausiai
+grupavimas greičiausiai veikia su list
+
+
 Tyrimų rezultatai:
 
-
-![Image 20-03-2025 at 00 36](https://github.com/user-attachments/assets/14a50359-b08d-41b6-80d2-47ed761a46b7)
-
-![Image 20-03-2025 at 00 36 (1)](https://github.com/user-attachments/assets/fce95860-1e86-40fc-85d7-0c656712960c)
-
-![Image 20-03-2025 at 00 37](https://github.com/user-attachments/assets/3d2d775b-93a3-4bc4-8c4c-b66c696b0c61)
+![Image 21-03-2025 at 11 21](https://github.com/user-attachments/assets/b130cf34-02f7-4559-9503-de3c4610b1ea)
 
 
-
-v0.4
-Pridėti du tyrimai:
-1 - failų generavimas ir jo uždarymas. Galima pasirinkti kokio dydžio failą norima generuoti. Pateikiamas tyrimo laikas.
-2 - failo nuskaitymas, duomenų sugrupavimas pagal vartotojo pasirinktą parametrą (V/M) ir išvedimas į du naujus failus. Pateikiamas kiekvieno šio etapo laikas bei bendras tyrimo laikas.
-
-![Image 07-03-2025 at 11 14](https://github.com/user-attachments/assets/0ccf32cc-ea58-4b94-8e3c-f553a58d8e87)
+![Image 21-03-2025 at 11 21](https://github.com/user-attachments/assets/3c586d71-daed-4634-85dd-767fe1f3ea93)
 
 
-![Image 07-03-2025 at 11 17](https://github.com/user-attachments/assets/3e752846-b92a-48b7-b9e0-f7c36e3ba89f)
+![Image 21-03-2025 at 11 22](https://github.com/user-attachments/assets/fd108eb5-1332-4aa7-9673-bc8e554d4bea)
+
+
+
+
 
